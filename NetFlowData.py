@@ -98,6 +98,10 @@ def SeparateByIP(serverList, type):
         cnt += len(serverDict.get(k))
     print ("cnt: " + str(cnt))
     print ("len: " + str(len(serverList)))
+    return serverDict
+
+def SplitByHour(serverDict):
+    
 
 # d1 = datetime.datetime.strptime("2017-02-28 23:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
 # d2 = datetime.datetime.strptime("2017-03-01 00:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
@@ -109,9 +113,37 @@ def SeparateByIP(serverList, type):
 dataList = Csv2DictList('/mnt/hgfs/Botnet/tempCSV.csv')
 serverList = ReduceByPort(dataList)
 print ("src")
-SeparateByIP(serverList[0], 'Src IP Addr')
+srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
 print ("dst")
-SeparateByIP(serverList[1], 'Dst IP Addr')
+dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 sortedList = []
 for s in serverList:
     for l in s:
@@ -120,7 +152,7 @@ sortedList = sorted(sortedList, key=lambda k: k['Date flow start'])
 for s in serverList:
     for l in s:
         print (l)
-
+"""
 # for s in serverList:
 #     for data in s:
 #         print data
