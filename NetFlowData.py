@@ -11,7 +11,7 @@ def Csv2DictList(filePath):
     sourceFile = open(filePath, 'r')
     fieldName = ['Date flow start','Duration','Proto','Src IP Addr','Src Port',
                  'Dst IP Addr','Dst Port','Packets','Bytes','Flow']
-    dataList = list()
+    dataList = []
 
     sourceFile.readline()
     lineNum = 0
@@ -29,7 +29,7 @@ def Csv2DictList(filePath):
         # print len(data)
 
         if len(data) < 10:
-            print "File: " + filePath + ", At line: " + lineNum + ", the field num in row is: " + len(data)
+            print ("File: " + filePath + ", At line: " + lineNum + ", the field num in row is: " + len(data))
             break
 
         data[0] = line[:23]
@@ -39,7 +39,7 @@ def Csv2DictList(filePath):
 
         # Convert data to dictionary type
         i = 0
-        row = dict()
+        row = {}
         for name in fieldName:
             # row[name] = data[i]
             if i == 0:
@@ -96,8 +96,8 @@ def SeparateByIP(serverList, type):
     cnt = 0
     for k in serverDict.keys():
         cnt += len(serverDict.get(k))
-    print "cnt: " + str(cnt)
-    print "len: " + str(len(serverList))
+    print ("cnt: " + str(cnt))
+    print ("len: " + str(len(serverList)))
 
 # d1 = datetime.datetime.strptime("2017-02-28 23:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
 # d2 = datetime.datetime.strptime("2017-03-01 00:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
@@ -108,9 +108,9 @@ def SeparateByIP(serverList, type):
 # dataList = Csv2DictList('/mnt/hgfs/Botnet/201703011530.csv')
 dataList = Csv2DictList('/mnt/hgfs/Botnet/tempCSV.csv')
 serverList = ReduceByPort(dataList)
-print "src"
+print ("src")
 SeparateByIP(serverList[0], 'Src IP Addr')
-print "dst"
+print ("dst")
 SeparateByIP(serverList[1], 'Dst IP Addr')
 sortedList = []
 for s in serverList:
@@ -119,9 +119,7 @@ for s in serverList:
 sortedList = sorted(sortedList, key=lambda k: k['Date flow start'])
 for s in serverList:
     for l in s:
-        print l
-
-
+        print (l)
 
 # for s in serverList:
 #     for data in s:

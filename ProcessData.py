@@ -1,8 +1,3 @@
-
-import os
-import re
-import datetime
-from datetime import timedelta
 # THRs: 
 # 1. n 個 time intervals
 # 2. 每個 time interval 的 client 數量
@@ -15,3 +10,8 @@ from datetime import timedelta
 # PSSs:
 # 1. 每個 time interval 中, 最大的 response payload
 # 2. ACs
+
+import os
+import re
+import datetime
+from datetime import timedelta
