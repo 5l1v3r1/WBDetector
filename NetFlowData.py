@@ -29,7 +29,7 @@ def Csv2DictList(filePath):
         # print len(data)
 
         if len(data) < 10:
-            print ("File: " + filePath + ", At line: " + lineNum + ", the field num in row is: " + len(data))
+            print "File: " + filePath + ", At line: " + str(lineNum) + ", the field num in row is: " + str(len(data))
             break
 
         data[0] = line[:23]
@@ -100,19 +100,66 @@ def SeparateByIP(serverList, type):
     print ("len: " + str(len(serverList)))
     return serverDict
 
+# # start from startStamp, split each IP by hour
+# # create dict by timestamp
+# def SplitByHour(serverDict):
+#     for server in serverDict:
+#         for data in server.keys():
+
+#             tempList = []
+#             timeInterval = 0
+#             startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+            
+#             for row in data:
+#                 if row.get('Date flow start') < startStamp:
+#                     break
+#                 elif (row.get('Date flow start') - startStamp) < timedelta(hours = 1):
+#                     tempList.append(row)
+#                 else:
+#                     timeDict = {timeInterval:tempList}
+#                     server.update({data:timeDict})
+#                     tempList = []
+#                     startStamp = startStamp + timedelta(hours = 1)
+#                     timeInterval += 1
+#                     tempList.append(row)
+#     pass
+
 # start from startStamp, split each IP by hour
 # create dict by timestamp
-def SplitByHour(serverDict):
+def TestSplitByHour(serverDict): # srcDict
+    f = open('out.txt', 'w')
+    for server in serverDict:    # key in dict
+        print server
+        f.write("\n" + server)
+        tempList = []
+        timeInterval = 0
+        startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+        
+        for data in serverDict.get(server): # dict in list
+            # print data.get('Date flow start')
+            # f.write("\n" + str(data.get('Date flow start')))
+            if data.get('Date flow start') < startStamp:
+                break
+            elif (data.get('Date flow start') - startStamp) < timedelta(hours = 1):
+                tempList.append(data)
+            else:
+                # timeDict = {timeInterval:tempList}
+                # server.update({data:timeDict})
+                # print "timeInterval: " + timeInterval
+                # print "startStamp:   " + startStamp
+                f.write("timeInterval: " + str(timeInterval) + "\n")
+                f.write("startStamp:   " + str(startStamp)   + "\n")
+                for item in tempList:
+                    f.write(str(item) + "\n")
+                tempList = []
+                startStamp = startStamp + timedelta(hours = 1)
+                timeInterval += 1
+                tempList.append(data)
     pass
 
-# d1 = datetime.datetime.strptime("2017-02-28 23:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
-# d2 = datetime.datetime.strptime("2017-03-01 00:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
-# if (d2 - d1) >= timedelta(hours = 1):
-#     print d2 - d1
 
-# dataList = Csv2DictList('/mnt/hgfs/Botnet/201703032000.csv')
-# dataList = Csv2DictList('/mnt/hgfs/Botnet/201703011530.csv')
-dataList = Csv2DictList('D:\\Botnet\\tempCSV.csv')
+
+dataList = Csv2DictList('D:\\Botnet\\201703010135.csv')  
 # for data in dataList[:20]:
 #     print data
 
@@ -128,23 +175,22 @@ serverList = ReduceByPort(dataList)
 
 print ("src")
 srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
-print (srcDict.keys()[0])
-for data in srcDict.get(srcDict.keys()[0]):
-    print data
-print ("------------------------------------------")
+# print (srcDict.keys()[0])
+# for data in srcDict.get(srcDict.keys()[0]):
+#     print data
+# print ("------------------------------------------")
 
 print ("dst")
 dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
-print (dstDict.keys()[0])
-for data in dstDict.get(dstDict.keys()[0]):
-    print data
-print ("------------------------------------------")
+# print (dstDict.keys()[0])
+# for data in dstDict.get(dstDict.keys()[0]):
+#     print data
+# print ("------------------------------------------")
 
 
 
 
-
-
+TestSplitByHour(srcDict)
 
 
 
@@ -179,3 +225,9 @@ for s in serverList:
 # for s in serverList:
 #     for data in s:
 #         print data
+
+
+# d1 = datetime.datetime.strptime("2017-02-28 23:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
+# d2 = datetime.datetime.strptime("2017-03-01 00:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
+# if (d2 - d1) >= timedelta(hours = 1):
+#     print d2 - d1
