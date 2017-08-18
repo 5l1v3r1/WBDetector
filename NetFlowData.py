@@ -5,7 +5,7 @@ import re
 import datetime
 from datetime import timedelta
 
-# 預處理一個 csv 檔, 不完整的 row data 就丟掉
+# Preprocessing a csv file, and drop data which is not complete
 # Return a dict-list of data
 def Csv2DictList(filePath):
     sourceFile = open(filePath, 'r')
@@ -55,8 +55,8 @@ def Csv2DictList(filePath):
     # print dataList[6]
     return dataList
 
-# 挑出 port number 為 443 或 8080 的
-# 分成 Src 與 Dst, 依照 IP 排序
+# pick port number is 443 or 8080 
+# seperate from src and dst
 def ReduceByPort(dataList):
     srcList = []
     dstList = []
@@ -72,7 +72,7 @@ def ReduceByPort(dataList):
     serverList.append(dstList)
     return serverList
 
-# 把 serverList 依照 IP 建立 dict
+# create dict for each IP in serverList
 def SeparateByIP(serverList, type):
     serverDict = {}
     newDictList = []
@@ -100,8 +100,10 @@ def SeparateByIP(serverList, type):
     print ("len: " + str(len(serverList)))
     return serverDict
 
+# start from startStamp, split each IP by hour
+# create dict by timestamp
 def SplitByHour(serverDict):
-    
+    pass
 
 # d1 = datetime.datetime.strptime("2017-02-28 23:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
 # d2 = datetime.datetime.strptime("2017-03-01 00:54:50.750", "%Y-%m-%d %H:%M:%S.%f")
@@ -110,12 +112,33 @@ def SplitByHour(serverDict):
 
 # dataList = Csv2DictList('/mnt/hgfs/Botnet/201703032000.csv')
 # dataList = Csv2DictList('/mnt/hgfs/Botnet/201703011530.csv')
-dataList = Csv2DictList('/mnt/hgfs/Botnet/tempCSV.csv')
+dataList = Csv2DictList('D:\\Botnet\\tempCSV.csv')
+# for data in dataList[:20]:
+#     print data
+
 serverList = ReduceByPort(dataList)
+# print ("src")
+# for data in serverList[0][:10]:
+#     print data
+# print ("dst")
+# for data in serverList[1][:10]:
+#     print data
+
+
+
 print ("src")
 srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
+print (srcDict.keys()[0])
+for data in srcDict.get(srcDict.keys()[0]):
+    print data
+print ("------------------------------------------")
+
 print ("dst")
 dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
+print (dstDict.keys()[0])
+for data in dstDict.get(dstDict.keys()[0]):
+    print data
+print ("------------------------------------------")
 
 
 
