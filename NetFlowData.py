@@ -96,91 +96,64 @@ def SeparateByIP(serverList, type):
     cnt = 0
     for k in serverDict.keys():
         cnt += len(serverDict.get(k))
-    print ("cnt: " + str(cnt))
-    print ("len: " + str(len(serverList)))
+    # print ("cnt: " + str(cnt))
+    # print ("len: " + str(len(serverList)))
     return serverDict
 
-# # start from startStamp, split each IP by hour
-# # create dict by timestamp
-# def SplitByHour(serverDict):
-#     for server in serverDict:
-#         for data in server.keys():
+def SplitByHour(serverDict, startStamp):
+    # Return a new serverDict may be better
+    newDict = {} # k: IP address, value: dict(timeDict) of dataList (tempList)
+    for s in serverDict.keys(): # Every 's' in 'serverDict.keys()' is an IP address
 
-#             tempList = []
-#             timeInterval = 0
-#             startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-            
-#             for row in data:
-#                 if row.get('Date flow start') < startStamp:
-#                     break
-#                 elif (row.get('Date flow start') - startStamp) < timedelta(hours = 1):
-#                     tempList.append(row)
-#                 else:
-#                     timeDict = {timeInterval:tempList}
-#                     server.update({data:timeDict})
-#                     tempList = []
-#                     startStamp = startStamp + timedelta(hours = 1)
-#                     timeInterval += 1
-#                     tempList.append(row)
-#     pass
+        print "==== START OF " + s + " =======\n\n"
+        count = 0               # Count the line processed
+        tempList = []           # Data will be stored in 'tempList' hour by hour
+        timeDict = {}           # Create a dict to store data with {timeInterval:tempList}
+        timeInterval = 0        # Number of time time interval
+        tempStamp = startStamp  # 'tempStamp' will walk hour by hour
 
-# start from startStamp, split each IP by hour
-# create dict by timestamp
-def TestSplitByHour(serverDict): # srcDict
-    f = open('out.txt', 'w')
-    for server in serverDict:    # key in dict
-        print server
-        f.write("\n" + server)
-        tempList = []
-        timeInterval = 0
-        startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-        
-        for data in serverDict.get(server): # dict in list
-            # print data.get('Date flow start')
-            # f.write("\n" + str(data.get('Date flow start')))
-            if data.get('Date flow start') < startStamp:
-                break
-            elif (data.get('Date flow start') - startStamp) < timedelta(hours = 1):
-                tempList.append(data)
+        for row in serverDict.get(s):
+            if row.get('Date flow start') < startStamp:
+                pass
+            elif (row.get('Date flow start') - tempStamp) < timedelta(hours = 1):
+                tempList.append(row)
+                if count == len(serverDict.get(s))-1:
+                    timeDict.update({timeInterval:tempList})
             else:
-                # timeDict = {timeInterval:tempList}
-                # server.update({data:timeDict})
-                # print "timeInterval: " + timeInterval
-                # print "startStamp:   " + startStamp
-                f.write("timeInterval: " + str(timeInterval) + "\n")
-                f.write("startStamp:   " + str(startStamp)   + "\n")
-                for item in tempList:
-                    f.write(str(item) + "\n")
+                timeDict.update({timeInterval:tempList})
                 tempList = []
-                startStamp = startStamp + timedelta(hours = 1)
                 timeInterval += 1
-                tempList.append(data)
-    pass
+                tempStamp += timedelta(hours = 1)
+                tempList.append(row)
+            count += 1
+
+        newDict.update({s:timeDict})
+        print "====== END OF " + s + " =======\n\n"
+    return newDict
 
 
-
-dataList = Csv2DictList('D:\\Botnet\\201703010135.csv')  
-# for data in dataList[:20]:
+dataList = Csv2DictList('spe.csv')
+# for data in dataList:
 #     print data
 
 serverList = ReduceByPort(dataList)
 # print ("src")
-# for data in serverList[0][:10]:
+# for data in serverList[0]:
 #     print data
 # print ("dst")
-# for data in serverList[1][:10]:
+# for data in serverList[1]:
 #     print data
 
 
 
-print ("src")
+# print ("src")
 srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
 # print (srcDict.keys()[0])
 # for data in srcDict.get(srcDict.keys()[0]):
 #     print data
 # print ("------------------------------------------")
 
-print ("dst")
+# print ("dst")
 dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
 # print (dstDict.keys()[0])
 # for data in dstDict.get(dstDict.keys()[0]):
@@ -189,11 +162,29 @@ dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
 
 
 
+startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 
-TestSplitByHour(srcDict)
+srcDict = SplitByHour(srcDict, startStamp)
+# print ("src")
+# for s in srcDict:
+#     print type(srcDict.get(s))
+#     for k in srcDict.get(s):
+#         print k
+#         print type(srcDict.get(s).get(k))
+#         for row in srcDict.get(s).get(k):
+#             print row
+#         print "-------\n\n"
 
-
-
+dstDict = SplitByHour(dstDict, startStamp)
+# print ("dst")
+# for s in dstDict:
+#     print type(dstDict.get(s))
+#     for k in dstDict.get(s):
+#         print k
+#         print type(dstDict.get(s).get(k))
+#         for row in dstDict.get(s).get(k):
+#             print row
+#         print "-------\n\n"
 
 
 

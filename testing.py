@@ -1,22 +1,14 @@
 
 
-# start from startStamp, split each IP by hour
-# create dict by timestamp
-def SplitByHour(serverDict):
-    
-    for server in serverDict:
-        startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-        for data in server.keys():
-            for row in data:
-                if (row.get('Date flow start') - startStamp) < timedelta(hours = 1):
-                    
-                else:
-                    firstInHour = True
-
-
-    pass
-
-
-
-
-
+a = dict()
+d1 = dict({3:[1, 2, 3]})
+print d1
+a.update({0:d1})
+print a
+d1.update({5:[5, 3, 2, 1, 4]})
+print d1
+a.update({0:d1})
+print a
+# print a
+# a.update({0:d2})
+# print a
