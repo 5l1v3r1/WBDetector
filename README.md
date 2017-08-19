@@ -13,8 +13,7 @@ implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 => return serverDict{serverIP, srcList}, serverDict{serverIP, dstList}
 
 4. 訂定一個開始時間(兩 serverDict 才會從一樣的地方開始), 資料每隔一小時切開一次  
-=> return serverPerHour{serverIP: srcHourDict{timeInterval:[srcList]}},   
-      serverPerHour{serverIP: dstHourDict{timeInterval:[dstList]}}
+=> return srcDict{IP: timeDict{timeInterval:[srcList]}}, dstDict{IP: timeDict{timeInterval:[dstList]}}
 
 ## Formula Parameter
 ### THRs: 
