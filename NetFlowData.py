@@ -13,7 +13,7 @@ def Csv2DictList(filePath):
                  'Dst IP Addr','Dst Port','Packets','Bytes','Flow']
     dataList = []
     sourceFile.readline() # Read the field name line
-
+    lineNum = 0
     for line in sourceFile:
 
         # End of Data
@@ -29,7 +29,7 @@ def Csv2DictList(filePath):
 
         # The row of data is not complete
         if len(data) < 10:
-            print "File: " + filePath +          \
+            print "File: " + filePath + \
                   ", At line: " + str(lineNum) + \
                   ", the field num in row is: " + str(len(data))
             break
@@ -105,6 +105,40 @@ def SeparateByIP(serverList, type):
     # print ("len: " + str(len(serverList)))
     return serverDict
 
+# Call functions above to process a file
+# Merge data into srcDict, dstDict
+def ProcessFile(mergeList, filePath):
+    dataList = []
+    serverList = []
+    srcTempDict = {}
+    dstTempDict = {}
+
+    dataList = Csv2DictList(filePath)
+    serverList = ReduceByPort(dataList)
+    srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
+    dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
+
+    # Check keys in the srcTempDict and dstTempDict
+    # If the key is in srcDict, dstDict already, append its value into srcDict.get(k)
+    # Or update a (k, v)b with the new key and its value
+    for k in srcDict:
+        if mergeList[0].get(k) == None:
+            mergeList[0].update({k:srcDict.get(k)})
+        else:
+            newList = mergeList[0].get(k)
+            newList.append(srcDict.get(k))
+            mergeList[0].update({k: newList})
+
+    for k in dstDict:
+        if mergeList[1].get(k) == None:
+            mergeList[1].update({k:dstDict.get(k)})
+        else:
+            newList = mergeList[1].get(k)
+            newList.append(dstDict.get(k))
+            mergeList[0].update({k: newList})
+
+    return mergeList
+
 def SplitByHour(serverDict, startStamp):
     # Return a new serverDict may be better
     newDict = {} # k: IP address, value: dict(timeDict) of dataList (tempList)
@@ -135,32 +169,19 @@ def SplitByHour(serverDict, startStamp):
         newDict.update({s:timeDict})
         print "====== END OF " + s + " =======\n\n"
     return newDict
-dataList = Csv2DictList('spe.csv')
-serverList = ReduceByPort(dataList)
-srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
-dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
 
-# List of srcDict
-# List of dstDict
+mergeList = [{},{}]
+for root, dirs, files in os.walk("D:\\Desktop\\WBDetector\\testCSV"):
+    for file in files:
+        filePath = os.path.join(root, file)
+        mergeList = ProcessFile(mergeList, filePath)
 
-# Merge srcDictList, dstDictList with IP
-
-startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-srcDict = SplitByHour(srcDict, startStamp)
-dstDict = SplitByHour(dstDict, startStamp)
-
-
-
-
-
-
-
-
-
-
-
-
-
+print "mergeList: " + str(len(mergeList))
+print mergeList[0].get('140.115.135.25')
+print mergeList[1].get('31.13.87.1')
+# startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+# srcDict = SplitByHour(srcDict, startStamp)
+# dstDict = SplitByHour(dstDict, startStamp)
 
 
 
