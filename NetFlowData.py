@@ -157,7 +157,7 @@ def SplitByHour(serverDict, startStamp):
     newDict = {} # k: IP address, value: dict(timeDict) of dataList (tempList)
     for s in serverDict.keys(): # Every 's' in 'serverDict.keys()' is an IP address
 
-        print "==== START OF " + s + " =======\n\n"
+        # print "==== START OF " + s + " =======\n\n"
         count = 0               # Count the line processed
         tempList = []           # Data will be stored in 'tempList' hour by hour
         timeDict = {}           # Create a dict to store data with {timeInterval:tempList}
@@ -177,7 +177,7 @@ def SplitByHour(serverDict, startStamp):
 
         newDict.update({s:timeDict})
 
-        print "====== END OF " + s + " =======\n\n"
+        # print "====== END OF " + s + " =======\n\n"
     return newDict
 ########################################## MAIN ##########################################
 
@@ -185,45 +185,35 @@ def SplitByHour(serverDict, startStamp):
 startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 
 mergeList = [{},{}]
-for root, dirs, files in os.walk('D:\\Botnet\\record'):
+for root, dirs, files in os.walk('D:\\Botnet\\WBDetector\\testCSV'):
     for name in files:
         filePath = os.path.join(root, name)
         print filePath
         mergeList = ProcessFile(mergeList, filePath)
         print
-        print
-"""
-srcOutFile = open('D:\\Botnet\\WBDetector\\srcOutFile.txt')
-dstOutFile = open('D:\\Botnet\\WBDetector\\dstOutFile.txt')
+
+
+srcOutFile = open('D:\\Botnet\\WBDetector\\srcOutFile.txt', 'w')
+dstOutFile = open('D:\\Botnet\\WBDetector\\dstOutFile.txt', 'w')
 
 srcDict = SplitByHour(mergeList[0], startStamp)
 print ("src")
 for s in srcDict:
-    # print type(srcDict.get(s))
-    srcOutFile.write(str(type(srcDict.get(s))))
+    print type(srcDict.get(s))
     for k in srcDict.get(s):
-        # print k
-        srcOutFile.write(str(k))
-        # print type(srcDict.get(s).get(k))
-        srcOutFile.write(srcDict.get(s).get(k))
+        print k
+        print type(srcDict.get(s).get(k))
         for row in srcDict.get(s).get(k):
-            # print row
-            srcOutFile.write(str(row))
-        # print "-------\n\n"
-        srcOutFile.write("-------\n\n")
+            print row
+        print "-------\n\n"
 
 dstDict = SplitByHour(mergeList[1], startStamp)
 print ("dst")
 for s in dstDict:
     print type(dstDict.get(s))
     for k in dstDict.get(s):
-        # print k
-        dstOutFile.write(str(k))
-        # print type(dstDict.get(s).get(k))
-        dstOutFile.write(dstDict.get(s).get(k))
+        print k
+        print type(dstDict.get(s).get(k))
         for row in dstDict.get(s).get(k):
-            # print row
-            dstOutFile.write(str(row))
-        # print "-------\n\n"
-        dstOutFile.write("-------\n\n")
-"""
+            print row
+        print "-------\n\n"
