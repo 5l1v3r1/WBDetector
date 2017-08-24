@@ -1,0 +1,529 @@
+D:\Botnet\record\201703010000.csv
+
+D:\Botnet\record\201703010005.csv
+File: D:\Botnet\record\201703010005.csv, At line: 0, the field num in row is: 1
+[[], []]
+
+D:\Botnet\record\201703010010.csv
+File: D:\Botnet\record\201703010010.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010015.csv
+
+D:\Botnet\record\201703010020.csv
+
+D:\Botnet\record\201703010025.csv
+
+D:\Botnet\record\201703010030.csv
+
+D:\Botnet\record\201703010035.csv
+File: D:\Botnet\record\201703010035.csv, At line: 0, the field num in row is: 2
+
+D:\Botnet\record\201703010040.csv
+
+D:\Botnet\record\201703010045.csv
+
+D:\Botnet\record\201703010050.csv
+
+D:\Botnet\record\201703010055.csv
+
+D:\Botnet\record\201703010100.csv
+
+D:\Botnet\record\201703010105.csv
+File: D:\Botnet\record\201703010105.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703010110.csv
+
+D:\Botnet\record\201703010115.csv
+File: D:\Botnet\record\201703010115.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010120.csv
+
+D:\Botnet\record\201703010125.csv
+File: D:\Botnet\record\201703010125.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703010130.csv
+File: D:\Botnet\record\201703010130.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010135.csv
+
+D:\Botnet\record\201703010140.csv
+
+D:\Botnet\record\201703010145.csv
+File: D:\Botnet\record\201703010145.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010150.csv
+
+D:\Botnet\record\201703010155.csv
+
+D:\Botnet\record\201703010200.csv
+
+D:\Botnet\record\201703010205.csv
+
+D:\Botnet\record\201703010210.csv
+
+D:\Botnet\record\201703010215.csv
+File: D:\Botnet\record\201703010215.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010220.csv
+
+D:\Botnet\record\201703010225.csv
+
+D:\Botnet\record\201703010230.csv
+
+D:\Botnet\record\201703010235.csv
+
+D:\Botnet\record\201703010240.csv
+File: D:\Botnet\record\201703010240.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010245.csv
+File: D:\Botnet\record\201703010245.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010250.csv
+
+D:\Botnet\record\201703010255.csv
+
+D:\Botnet\record\201703010300.csv
+
+D:\Botnet\record\201703010305.csv
+
+D:\Botnet\record\201703010310.csv
+
+D:\Botnet\record\201703010315.csv
+
+D:\Botnet\record\201703010320.csv
+
+D:\Botnet\record\201703010325.csv
+
+D:\Botnet\record\201703010330.csv
+
+D:\Botnet\record\201703010335.csv
+File: D:\Botnet\record\201703010335.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010340.csv
+File: D:\Botnet\record\201703010340.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703010345.csv
+File: D:\Botnet\record\201703010345.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010350.csv
+
+D:\Botnet\record\201703010355.csv
+File: D:\Botnet\record\201703010355.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010400.csv
+
+D:\Botnet\record\201703010405.csv
+
+D:\Botnet\record\201703010410.csv
+
+D:\Botnet\record\201703010415.csv
+
+D:\Botnet\record\201703010420.csv
+File: D:\Botnet\record\201703010420.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010425.csv
+File: D:\Botnet\record\201703010425.csv, At line: 0, the field num in row is: 2
+
+D:\Botnet\record\201703010430.csv
+File: D:\Botnet\record\201703010430.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010435.csv
+
+D:\Botnet\record\201703010440.csv
+
+D:\Botnet\record\201703010445.csv
+
+D:\Botnet\record\201703010450.csv
+
+D:\Botnet\record\201703010455.csv
+
+D:\Botnet\record\201703010500.csv
+
+D:\Botnet\record\201703010505.csv
+File: D:\Botnet\record\201703010505.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010510.csv
+
+D:\Botnet\record\201703010515.csv
+
+D:\Botnet\record\201703010520.csv
+
+D:\Botnet\record\201703010525.csv
+
+D:\Botnet\record\201703010530.csv
+File: D:\Botnet\record\201703010530.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010535.csv
+File: D:\Botnet\record\201703010535.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010540.csv
+File: D:\Botnet\record\201703010540.csv, At line: 0, the field num in row is: 2
+
+D:\Botnet\record\201703010545.csv
+
+D:\Botnet\record\201703010550.csv
+
+D:\Botnet\record\201703010555.csv
+File: D:\Botnet\record\201703010555.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010600.csv
+File: D:\Botnet\record\201703010600.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010605.csv
+File: D:\Botnet\record\201703010605.csv, At line: 0, the field num in row is: 6
+
+D:\Botnet\record\201703010610.csv
+
+D:\Botnet\record\201703010615.csv
+File: D:\Botnet\record\201703010615.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010620.csv
+File: D:\Botnet\record\201703010620.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010625.csv
+
+D:\Botnet\record\201703010630.csv
+
+D:\Botnet\record\201703010635.csv
+
+D:\Botnet\record\201703010640.csv
+File: D:\Botnet\record\201703010640.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010645.csv
+
+D:\Botnet\record\201703010650.csv
+File: D:\Botnet\record\201703010650.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010655.csv
+
+D:\Botnet\record\201703010700.csv
+File: D:\Botnet\record\201703010700.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010705.csv
+
+D:\Botnet\record\201703010710.csv
+
+D:\Botnet\record\201703010715.csv
+File: D:\Botnet\record\201703010715.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703010720.csv
+File: D:\Botnet\record\201703010720.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010725.csv
+
+D:\Botnet\record\201703010730.csv
+File: D:\Botnet\record\201703010730.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703010735.csv
+File: D:\Botnet\record\201703010735.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703010740.csv
+
+D:\Botnet\record\201703010745.csv
+
+D:\Botnet\record\201703010750.csv
+File: D:\Botnet\record\201703010750.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010755.csv
+
+D:\Botnet\record\201703010800.csv
+
+D:\Botnet\record\201703010805.csv
+File: D:\Botnet\record\201703010805.csv, At line: 0, the field num in row is: 3
+
+D:\Botnet\record\201703010810.csv
+File: D:\Botnet\record\201703010810.csv, At line: 0, the field num in row is: 6
+
+D:\Botnet\record\201703010815.csv
+
+D:\Botnet\record\201703010820.csv
+File: D:\Botnet\record\201703010820.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010825.csv
+
+D:\Botnet\record\201703010830.csv
+
+D:\Botnet\record\201703010835.csv
+
+D:\Botnet\record\201703010840.csv
+
+D:\Botnet\record\201703010845.csv
+
+D:\Botnet\record\201703010850.csv
+File: D:\Botnet\record\201703010850.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010855.csv
+
+D:\Botnet\record\201703010900.csv
+
+D:\Botnet\record\201703010905.csv
+
+D:\Botnet\record\201703010910.csv
+File: D:\Botnet\record\201703010910.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010915.csv
+
+D:\Botnet\record\201703010920.csv
+File: D:\Botnet\record\201703010920.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703010925.csv
+
+D:\Botnet\record\201703010930.csv
+
+D:\Botnet\record\201703010935.csv
+File: D:\Botnet\record\201703010935.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703010940.csv
+
+D:\Botnet\record\201703010945.csv
+
+D:\Botnet\record\201703010950.csv
+
+D:\Botnet\record\201703010955.csv
+
+D:\Botnet\record\201703011000.csv
+
+D:\Botnet\record\201703011005.csv
+File: D:\Botnet\record\201703011005.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011010.csv
+
+D:\Botnet\record\201703011015.csv
+
+D:\Botnet\record\201703011020.csv
+
+D:\Botnet\record\201703011025.csv
+
+D:\Botnet\record\201703011030.csv
+
+D:\Botnet\record\201703011035.csv
+File: D:\Botnet\record\201703011035.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703011040.csv
+File: D:\Botnet\record\201703011040.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011045.csv
+File: D:\Botnet\record\201703011045.csv, At line: 0, the field num in row is: 6
+
+D:\Botnet\record\201703011050.csv
+
+D:\Botnet\record\201703011055.csv
+
+D:\Botnet\record\201703011100.csv
+File: D:\Botnet\record\201703011100.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011105.csv
+
+D:\Botnet\record\201703011110.csv
+
+D:\Botnet\record\201703011115.csv
+
+D:\Botnet\record\201703011120.csv
+
+D:\Botnet\record\201703011125.csv
+File: D:\Botnet\record\201703011125.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011130.csv
+
+D:\Botnet\record\201703011135.csv
+
+D:\Botnet\record\201703011140.csv
+
+D:\Botnet\record\201703011145.csv
+
+D:\Botnet\record\201703011150.csv
+
+D:\Botnet\record\201703011155.csv
+
+D:\Botnet\record\201703011200.csv
+
+D:\Botnet\record\201703011205.csv
+
+D:\Botnet\record\201703011210.csv
+
+D:\Botnet\record\201703011215.csv
+
+D:\Botnet\record\201703011220.csv
+File: D:\Botnet\record\201703011220.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011225.csv
+
+D:\Botnet\record\201703011230.csv
+File: D:\Botnet\record\201703011230.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703011235.csv
+File: D:\Botnet\record\201703011235.csv, At line: 0, the field num in row is: 2
+
+D:\Botnet\record\201703011240.csv
+File: D:\Botnet\record\201703011240.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011245.csv
+File: D:\Botnet\record\201703011245.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011250.csv
+
+D:\Botnet\record\201703011255.csv
+File: D:\Botnet\record\201703011255.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011300.csv
+File: D:\Botnet\record\201703011300.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011305.csv
+
+D:\Botnet\record\201703011310.csv
+
+D:\Botnet\record\201703011315.csv
+
+D:\Botnet\record\201703011320.csv
+
+D:\Botnet\record\201703011325.csv
+
+D:\Botnet\record\201703011330.csv
+File: D:\Botnet\record\201703011330.csv, At line: 0, the field num in row is: 6
+
+D:\Botnet\record\201703011335.csv
+
+D:\Botnet\record\201703011340.csv
+File: D:\Botnet\record\201703011340.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703011345.csv
+
+D:\Botnet\record\201703011350.csv
+
+D:\Botnet\record\201703011355.csv
+
+D:\Botnet\record\201703011400.csv
+
+D:\Botnet\record\201703011405.csv
+
+D:\Botnet\record\201703011410.csv
+
+D:\Botnet\record\201703011415.csv
+
+D:\Botnet\record\201703011420.csv
+
+D:\Botnet\record\201703011425.csv
+
+D:\Botnet\record\201703011430.csv
+
+D:\Botnet\record\201703011435.csv
+
+D:\Botnet\record\201703011440.csv
+
+D:\Botnet\record\201703011445.csv
+File: D:\Botnet\record\201703011445.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011450.csv
+
+D:\Botnet\record\201703011455.csv
+File: D:\Botnet\record\201703011455.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011500.csv
+
+D:\Botnet\record\201703011505.csv
+
+D:\Botnet\record\201703011510.csv
+
+D:\Botnet\record\201703011515.csv
+File: D:\Botnet\record\201703011515.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703011520.csv
+
+D:\Botnet\record\201703011525.csv
+File: D:\Botnet\record\201703011525.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011530.csv
+
+D:\Botnet\record\201703011535.csv
+
+D:\Botnet\record\201703011540.csv
+
+D:\Botnet\record\201703011545.csv
+
+D:\Botnet\record\201703011550.csv
+File: D:\Botnet\record\201703011550.csv, At line: 0, the field num in row is: 1
+
+D:\Botnet\record\201703011555.csv
+
+D:\Botnet\record\201703011600.csv
+
+D:\Botnet\record\201703011605.csv
+
+D:\Botnet\record\201703011610.csv
+
+D:\Botnet\record\201703011615.csv
+File: D:\Botnet\record\201703011615.csv, At line: 0, the field num in row is: 6
+
+D:\Botnet\record\201703011620.csv
+
+D:\Botnet\record\201703011625.csv
+
+D:\Botnet\record\201703011630.csv
+File: D:\Botnet\record\201703011630.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011635.csv
+
+D:\Botnet\record\201703011640.csv
+
+D:\Botnet\record\201703011645.csv
+File: D:\Botnet\record\201703011645.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011650.csv
+
+D:\Botnet\record\201703011655.csv
+
+D:\Botnet\record\201703011700.csv
+File: D:\Botnet\record\201703011700.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011705.csv
+File: D:\Botnet\record\201703011705.csv, At line: 0, the field num in row is: 8
+
+D:\Botnet\record\201703011710.csv
+
+D:\Botnet\record\201703011715.csv
+
+D:\Botnet\record\201703011720.csv
+File: D:\Botnet\record\201703011720.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011725.csv
+
+D:\Botnet\record\201703011730.csv
+File: D:\Botnet\record\201703011730.csv, At line: 0, the field num in row is: 6
+
+D:\Botnet\record\201703011735.csv
+
+D:\Botnet\record\201703011740.csv
+
+D:\Botnet\record\201703011745.csv
+
+D:\Botnet\record\201703011750.csv
+
+D:\Botnet\record\201703011755.csv
+
+D:\Botnet\record\201703011800.csv
+
+D:\Botnet\record\201703011805.csv
+File: D:\Botnet\record\201703011805.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011810.csv
+
+D:\Botnet\record\201703011815.csv
+File: D:\Botnet\record\201703011815.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011820.csv
+
+D:\Botnet\record\201703011825.csv
+File: D:\Botnet\record\201703011825.csv, At line: 0, the field num in row is: 4
+
+D:\Botnet\record\201703011830.csv
+File: D:\Botnet\record\201703011830.csv, At line: 0, the field num in row is: 9
+
+D:\Botnet\record\201703011835.csv
+
+D:\Botnet\record\201703011840.csv
+
+D:\Botnet\record\201703011845.csv
+
+D:\Botnet\record\201703011850.csv
+
+D:\Botnet\record\201703011855.csv

@@ -53,7 +53,7 @@ def Csv2DictList(filePath):
         
         # Append to dataList
         dataList.append(row)
-
+    sourceFile.close()
     return dataList
 
 # Pick port number == 443 or 8080 
@@ -158,7 +158,6 @@ def SplitByHour(serverDict, startStamp):
     for s in serverDict.keys(): # Every 's' in 'serverDict.keys()' is an IP address
 
         # print "==== START OF " + s + " =======\n\n"
-        count = 0               # Count the line processed
         tempList = []           # Data will be stored in 'tempList' hour by hour
         timeDict = {}           # Create a dict to store data with {timeInterval:tempList}
 
@@ -185,16 +184,14 @@ def SplitByHour(serverDict, startStamp):
 startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 
 mergeList = [{},{}]
-for root, dirs, files in os.walk('D:\\Botnet\\WBDetector\\testCSV'):
+#for root, dirs, files in os.walk('D:\\Botnet\\WBDetector\\testCSV'):
+for root, dirs, files in os.walk('D:\\Botnet\\record'):
     for name in files:
         filePath = os.path.join(root, name)
         print filePath
         mergeList = ProcessFile(mergeList, filePath)
         print
 
-
-srcOutFile = open('D:\\Botnet\\WBDetector\\srcOutFile.txt', 'w')
-dstOutFile = open('D:\\Botnet\\WBDetector\\dstOutFile.txt', 'w')
 
 srcDict = SplitByHour(mergeList[0], startStamp)
 print ("src")
