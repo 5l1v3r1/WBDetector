@@ -16,7 +16,7 @@ implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 => return srcDict{IP: timeDict{timeInterval:[srcList]}}, dstDict{IP: timeDict{timeInterval:[dstList]}}
 
 ### 一條龍式作法, 產生 Memory Error
-每個檔案都先做 step 1~3, 合併起來再去 step4 切 timeInterval,
+每個檔案都先做 step 1~3, 合併起來再去 step4 切 timeInterval,  
 可先拿去白色主機跑看看, 並思考如何切開可省下記憶體
 
 ## Formula Parameter
