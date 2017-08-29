@@ -4,7 +4,7 @@ implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 ## NetFlow Data
 檔案依時間排序，但同一 time stamp 可能出現在不同檔案中
 1. 預處理 csv 檔, 不完整的 row data 就丟掉,  
-=> return dataList [{}]...[{}]
+=> return dataList [{}...{}]
 
 2. 挑出 port number 為 443 或 8080 的, 分成 Src 與 Dst, 依照 IP 排序,  
 => return serverList[srcList, dstList]
