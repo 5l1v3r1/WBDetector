@@ -17,7 +17,10 @@ implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 
 ### 一條龍式作法, 產生 Memory Error
 每個檔案都先做 step 1~3, 合併起來再去 step4 切 timeInterval,  
-可先拿去白色主機跑看看, 並思考如何切開可省下記憶體
+可先拿去白色主機跑, 但記憶體還是不夠用, 一條龍可能不適合
+
+### 做部分資料整理後, 先存檔備用
+每個檔案都先做 step 1~3, 依照 IP 存成 txt 檔
 
 ## Formula Parameter
 ### THRs: 
