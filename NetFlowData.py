@@ -116,9 +116,6 @@ def ProcessFile(mergeList, filePath):
     dataList = Csv2DictList(filePath)
     serverList = ReduceByPort(dataList)
 
-    if filePath == 'D:\\Botnet\\record\\201703010005.csv':
-        print serverList
-
     if len(serverList[0]) > 0:
         srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
     if len(serverList[1]) > 0:
