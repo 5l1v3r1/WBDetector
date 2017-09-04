@@ -37,18 +37,22 @@ def days_hours_minutes(td):
 
 def Time2Interval(time, t0):
     t = (time - t0).days, (time - t0).seconds//3600
-    print t[0] * 24 + t[1]
+    return t[0] * 24 + t[1]
     return t
 
 
 t0 = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-t1 = datetime.datetime.strptime("2017-03-01 01:59:00.000", "%Y-%m-%d %H:%M:%S.%f")
+t1 = datetime.datetime.strptime("2017-03-01 00:59:00.000", "%Y-%m-%d %H:%M:%S.%f")
 t2 = datetime.datetime.strptime("2017-03-01 02:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 t3 = datetime.datetime.strptime("2017-03-01 03:05:00.080", "%Y-%m-%d %H:%M:%S.%f")
 t4 = datetime.datetime.strptime("2017-03-02 04:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 
 # print  days_hours_minutes(t3-t0)
-print Time2Interval(t4, t0)
+# print Time2Interval(t1, t0)
+
+l1 = [1,3,5,7,9]
+l2 = [0,2,4,6,8]
+print l1 + l2
 
 """ Testing Area
 dataList = Csv2DictList('spe.csv')

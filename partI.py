@@ -76,13 +76,13 @@ def ReduceByPort(dataList):
     return serverList
 
 # Create dict for each IP in serverLis
-def SeparateByIP(serverList, selectType):
+def SeparateByIP(serverList, type):
     serverDict = {}
     newDictList = []
     i = 0
-    selectIP = serverList[0].get(selectType)
+    selectIP = serverList[0].get(type)
     while i < len(serverList):
-        if serverList[i].get(selectType) == selectIP:
+        if serverList[i].get(type) == selectIP:
             newDictList.append(serverList[i])
             # The last IP is the same with privious IP
             if i == (len(serverList)-1):
@@ -90,7 +90,7 @@ def SeparateByIP(serverList, selectType):
         else: # A different IP
             serverDict.update({selectIP:newDictList})
             newDictList = []
-            selectIP = serverList[i].get(selectType)
+            selectIP = serverList[i].get(type)
             newDictList.append(serverList[i])
             # The last IP different with privious IP
             # Put it into 'serverDict' directly
@@ -172,89 +172,28 @@ def SplitByHour(dataList, startStamp, endStamp):
             timeDict.update({timeInterval:tempList})
     return timeDict
 
-def GetMaxSize(timeDict):
-    maxSize = {}
-    for t in timeDict:
-        maxByte = 0
-        for row in timeDict[t]:
-            if int(row.get('Bytes')) > maxByte:
-                maxByte = int(row.get('Bytes'))
-        maxSize.update({t:maxByte})
-    return maxSize
-
-
-def GetHostGroup(timeDict, selectType):
-    hostGroup = {}
-    for t in timeDict:
-        hosts = []
-        for row in timeDict[t]:
-            hosts.append(row.get(selectType))
-        hosts = set(hosts)
-        hostGroup.update({t:hosts})
-    return hostGroup
-
-def MergeHostGroup(hostGroupSrc, hostGroupDst):
-    hostGroup = {}
-    hostGroup = hostGroupSrc
-
-    for t in hostGroupDst:
-        if t in hostGroup:
-            newHosts = hostGroup.get(t) | hostGroupDst.get(t)
-            hostGroup.update({t:newHosts})
-        else:
-            hostGroup.update({t:hostGroupDst.get(t)})
-    return hostGroup
-
 def GetFactors(tempPath, name, startStamp, endStamp):
     dataList = []
-    timeDict = {}
-
-    maxSize = {}   # k: timeInterval, v: byte
-    hostGroupSrc = {} # k: timeInterval, v: set(hostIP)
-
-    escapeIP = set()
-
-    path = tempPath + '\\srcServer\\' + name
+    path = os.path.join(tempPath, '\\srcServer\\', name)
     dataList = ReadServerFile(path)
-    timeDict = SplitByHour(dataList, startStamp, endStamp)
-    maxSize = GetMaxSize(timeDict)
-    hostGroupSrc = GetHostGroup(timeDict, 'Dst IP Addr')
+    SplitByHour(dataList, startStamp, endStamp)
 
     path = tempPath + '\\dstServer\\' + name
-    if os.path.exists(path):
-        escapeIP.append(name)
+    if os.path.exist():
+        intersection.append(name)
         dataList = ReadServerFile(path)
         SplitByHour(dataList, startStamp, endStamp)
-        hostGroupDst = GetHostGroup(timeDict, 'Src IP Addr')
-        hostGroup = MergeHostGroup(hostGroupSrc, hostGroupDst)
-
-    return escapeIP
 
 def PartII(tempPath, startStamp, endStamp):
     t = 0 # 72 hours: t0 ~ t71
 
     for root, dirs, files in os.walk(tempPath + '\\srcServer'):
         for name in files:
-            print name
             # path = os.path.join(root, name)
-            # GetFactors(tempPath, name, startStamp)
+            GetFactors(tempPath, name, startStamp)
     pass
 
 
-if __name__ == '__main__':
-    filePath = 'D:\\Botnet\\record'
-    tempPath = 'D:\\Botnet\\TempFile_old'
-    startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    # PartI(filePath, tempPath)
-    # dataList = ReadServerFile(tempPath + '\\srcServer\\140.115.135.31.txt')
-    # timeDict = SplitByHour(dataList, startStamp)
-    # for item in timeDict:
-    #     print item
-    #     for row in timeDict[item]:
-    #         print row
-    #     print
-    #     print
-    # PartII(tempPath, startStamp, endStamp)
-    name = '140.115.50.24.txt'
-    print GetFactors(tempPath, name, startStamp, endStamp)
+filePath = 'D:\\Botnet\\record'
+tempPath = 'D:\\Botnet\\TempFile'
+PartI(filePath, tempPath)
