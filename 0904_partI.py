@@ -172,154 +172,28 @@ def SplitByHour(dataList, startStamp, endStamp):
             timeDict.update({timeInterval:tempList})
     return timeDict
 
-def GetMaxSize(timeDict):
-    maxSize = {}
-    for t in timeDict:
-        maxByte = 0.0
-        for row in timeDict[t]:
-            size = row.get('Bytes')
-            if size.endswith('K'):
-                size = float(size.replace('K', '')) * 1024
-                row.update({'Bytes':size})
-            elif size.endswith('M'):
-                size = float(size.replace('M', '')) * 1024 * 1024
-                row.update({'Bytes':size})
-
-            if float(row.get('Bytes')) > maxByte:
-                maxByte = float(row.get('Bytes'))
-        maxSize.update({t:maxByte})
-    return maxSize
-
-def GetHostGroup(timeDict, selectType):
-    hostGroup = {}
-    for t in timeDict:
-        hosts = []
-        for row in timeDict[t]:
-            hosts.append(row.get(selectType))
-        hosts = set(hosts)
-        hostGroup.update({t:hosts})
-    return hostGroup
-
-def MergeHostGroup(hostGroupSrc, hostGroupDst):
-    hostGroup = {}
-    hostGroup = hostGroupSrc
-
-    for t in hostGroupDst:
-        if t in hostGroup:
-            newHosts = hostGroup.get(t) | hostGroupDst.get(t)
-            hostGroup.update({t:newHosts})
-        else:
-            hostGroup.update({t:hostGroupDst.get(t)})
-    return hostGroup
-
-def ExtractFactor(tempPath, name, startStamp, endStamp):
+def GetFactors(tempPath, name, startStamp, endStamp):
     dataList = []
-    timeDict = {}
-
-    maxSize = {}   # k: timeInterval, v: byte
-    hostGroupSrc = {} # k: timeInterval, v: set(hostIP)
-
-    escapeIP = []
-
-    path = tempPath + '\\srcServer\\' + name
+    path = os.path.join(tempPath, '\\srcServer\\', name)
     dataList = ReadServerFile(path)
-    timeDict = SplitByHour(dataList, startStamp, endStamp)
-    maxSize = GetMaxSize(timeDict)
-    hostGroupSrc = GetHostGroup(timeDict, 'Dst IP Addr')
+    SplitByHour(dataList, startStamp, endStamp)
 
     path = tempPath + '\\dstServer\\' + name
-    if os.path.exists(path):
-        escapeIP.append(name)
+    if os.path.exist():
+        intersection.append(name)
         dataList = ReadServerFile(path)
         SplitByHour(dataList, startStamp, endStamp)
-        hostGroupDst = GetHostGroup(timeDict, 'Src IP Addr')
-        hostGroup = MergeHostGroup(hostGroupSrc, hostGroupDst)
-    else:
-        hostGroup = hostGroupSrc
-
-    # for t in maxSize:
-    #     print t
-    #     print "maxSize  : " + str(maxSize[t])
-    #     print "- - - - - -  - - - - - - -"
-    #     print
-
-    # for t in hostGroup:
-    #     print t
-    #     print "hostGroup: "
-    #     for item in hostGroup[t]:
-    #         print item
-    #     print "= = = = = =  = = = = = = ="
-    #     print
-
-
-    i = 1
-    n = 72
-    thr_sigma = 0
-    acs_sigma = 0
-    pss_sigma = 0
-
-    while i < 72:
-        if hostGroup.get(i-1) == None:
-            hostGroup.update({i-1:[]})
-        if hostGroup.get(i) == None:
-            hostGroup.update({i:[]})
-        if maxSize.get(i) == None:
-            maxSize.update({i:0})
-
-        if len(set(hostGroup.get(i))) > 0:
-            thr_sigma += float(len(set(hostGroup.get(i-1)) & set(hostGroup.get(i)))) / len(set(hostGroup.get(i)))
-        acs_sigma += len(set(hostGroup.get(i)))
-        pss_sigma += maxSize.get(i)
-
-        i += 1
-
-    THR = thr_sigma / n
-    AC = acs_sigma
-    if (AC == 0) & (pss_sigma == 0):
-        PSS = 0
-    else:
-        PSS = pss_sigma / AC
-
-    print "Server IP: " + name[:-4]
-    print "THR =      " + str(THR)
-    print "AC =       " + str(AC)
-    print "PSS =      " + str(PSS)
-    print "= = = = = = = = = = = = ="
-    print
-
-    return escapeIP
 
 def PartII(tempPath, startStamp, endStamp):
     t = 0 # 72 hours: t0 ~ t71
-    escapeIP = []
+
     for root, dirs, files in os.walk(tempPath + '\\srcServer'):
         for name in files:
-            # print name
             # path = os.path.join(root, name)
-            escapeIP += ExtractFactor(tempPath, name, startStamp, endStamp)
-
-    # Src OK
-    # Process the ip not in escapeIP
-    escapeIP = set(escapeIP)
-    print "len(escapeIP): " + str(len(escapeIP))
-    print "escapeIP"
-    for ip in escapeIP:
-        print ip
+            GetFactors(tempPath, name, startStamp)
     pass
 
 
-if __name__ == '__main__':
-    filePath = 'D:\\Botnet\\record'
-    tempPath = 'D:\\Botnet\\TempFile_old'
-    startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    # PartI(filePath, tempPath)
-    # dataList = ReadServerFile(tempPath + '\\srcServer\\140.115.135.31.txt')
-    # timeDict = SplitByHour(dataList, startStamp)
-    # for item in timeDict:
-    #     print item
-    #     for row in timeDict[item]:
-    #         print row
-    #     print
-    #     print
-    PartII(tempPath, startStamp, endStamp)
+filePath = 'D:\\Botnet\\record'
+tempPath = 'D:\\Botnet\\TempAgain'
+PartI(filePath, tempPath)

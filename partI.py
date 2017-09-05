@@ -24,6 +24,7 @@ def Csv2DictList(filePath):
         # Get data from string
         line = line.replace(" M", "M")
         line = line.replace(" K", "K")
+        line = line.replace(" G", "G")
         line = line[:-1]
         data = re.split(r" +-> +| {1,}|:|,+",line[24:])
         # print len(data)
@@ -37,8 +38,9 @@ def Csv2DictList(filePath):
 
         data[0] = line[:23]
         for j in range(7,9):
-            data[j] = data[j].replace("M", "")
-            data[j] = data[j].replace("K", "")
+            data[j] = data[j].replace("M", " M")
+            data[j] = data[j].replace("K", " K")
+            data[j] = data[j].replace("G", " G")
 
         # Put every column into dict with (k:v) = (fieldName:data)
         i = 0
@@ -106,10 +108,10 @@ def SeparateByIP(serverList, type):
     return serverDict
 
 def PartI(filePath, tempPath):
-    # if not os.path.exist(tempPath + '\\srcServer'):
-    #     os.makedirs(tempPath + '\\srcServer')
-    # if not os.path.exist(tempPath + '\\dstServer'):
-    #     os.makedirs(tempPath + '\\dstServer')
+    if not os.path.exists(tempPath + '\\srcServer'):
+        os.mkdir(tempPath + '\\srcServer')
+    if not os.path.exists(tempPath + '\\dstServer'):
+        os.mkdir(tempPath + '\\dstServer')
 
     for root, dirs, files in os.walk(filePath):
 
@@ -139,61 +141,6 @@ def PartI(filePath, tempPath):
 
             print "Process Rate: " + str(count) + " / " + str(len(files))
 
-
-
-def ReadServerFile(path):
-    dataList = []
-    file = open(path, 'r')
-    for line in file:
-        dataList.append(eval(line))
-    return dataList
-
-def Time2Interval(time, startStamp):
-    t = (time - startStamp).days, (time - startStamp).seconds//3600
-    return t[0] * 24 + t[1]
-
-def SplitByHour(dataList, startStamp, endStamp):
-    tempList = []           # Data will be stored in 'tempList' hour by hour
-    timeDict = {}           # Create a dict to store data with {timeInterval:tempList}
-
-    for row in dataList:
-        if row.get('Date flow start') < startStamp:
-            pass
-        elif row.get('Date flow start') >= endStamp:
-            pass
-        else:
-            timeInterval = Time2Interval(row.get('Date flow start'), startStamp)
-            if timeInterval in timeDict:
-                tempList = timeDict.get(timeInterval)
-            else:
-                tempList = []
-
-            tempList.append(row)
-            timeDict.update({timeInterval:tempList})
-    return timeDict
-
-def GetFactors(tempPath, name, startStamp, endStamp):
-    dataList = []
-    path = os.path.join(tempPath, '\\srcServer\\', name)
-    dataList = ReadServerFile(path)
-    SplitByHour(dataList, startStamp, endStamp)
-
-    path = tempPath + '\\dstServer\\' + name
-    if os.path.exist():
-        intersection.append(name)
-        dataList = ReadServerFile(path)
-        SplitByHour(dataList, startStamp, endStamp)
-
-def PartII(tempPath, startStamp, endStamp):
-    t = 0 # 72 hours: t0 ~ t71
-
-    for root, dirs, files in os.walk(tempPath + '\\srcServer'):
-        for name in files:
-            # path = os.path.join(root, name)
-            GetFactors(tempPath, name, startStamp)
-    pass
-
-
 filePath = 'D:\\Botnet\\record'
-tempPath = 'D:\\Botnet\\TempFile'
+tempPath = 'D:\\Botnet\\TempAgain'
 PartI(filePath, tempPath)

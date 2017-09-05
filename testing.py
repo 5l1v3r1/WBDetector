@@ -50,8 +50,8 @@ t4 = datetime.datetime.strptime("2017-03-02 04:00:00.000", "%Y-%m-%d %H:%M:%S.%f
 # print  days_hours_minutes(t3-t0)
 # print Time2Interval(t1, t0)
 
-l1 = [1,3,5,7,9]
-l2 = [0,2,4,6,8]
+l1 = set([1,3,5,7,9])
+l2 = set([0,2,4,6,8])
 print l1 + l2
 
 """ Testing Area
