@@ -3,6 +3,7 @@
 import os
 import re
 import ast
+import csv
 import datetime
 from datetime import timedelta
 
@@ -143,9 +144,14 @@ def PartI(filePath, tempPath):
 
 def ReadServerFile(path):
     dataList = []
-    file = open(path, 'r')
-    for line in file:
-        dataList.append(eval(line))
+    try:
+        file = open(path, 'r')
+        for line in file:
+            dataList.append(eval(line))
+    except Exception as e:
+        print e
+
+
     return dataList
 
 def Time2Interval(time, startStamp):
@@ -212,7 +218,7 @@ def MergeHostGroup(hostGroupSrc, hostGroupDst):
             hostGroup.update({t:hostGroupDst.get(t)})
     return hostGroup
 
-def ExtractFactor_Src(tempPath, name, startStamp, endStamp):
+def ExtractFactor_Src(tempPath, name, startStamp, endStamp, savePath):
     dataList = []
     timeDict = {}
 
@@ -237,21 +243,6 @@ def ExtractFactor_Src(tempPath, name, startStamp, endStamp):
     else:
         hostGroup = hostGroupSrc
 
-    # for t in maxSize:
-    #     print t
-    #     print "maxSize  : " + str(maxSize[t])
-    #     print "- - - - - -  - - - - - - -"
-    #     print
-
-    # for t in hostGroup:
-    #     print t
-    #     print "hostGroup: "
-    #     for item in hostGroup[t]:
-    #         print item
-    #     print "= = = = = =  = = = = = = ="
-    #     print
-
-
     i = 1
     n = 72
     thr_sigma = 0
@@ -280,16 +271,14 @@ def ExtractFactor_Src(tempPath, name, startStamp, endStamp):
     else:
         PSS = pss_sigma / AC
 
-    print "Server IP: " + name[:-4]
-    print "THR =      " + str(THR)
-    print "AC =       " + str(AC)
-    print "PSS =      " + str(PSS)
-    print "= = = = = = = = = = = = ="
-    print
+    result = [name[:-4], str(THR), str(AC), str(PSS)]
+    with open(savePath, 'ab') as f:
+        writer = csv.writer(f)
+        writer.writerow(result)
 
     return escapeIP
 
-def ExtractFactor_Dst(tempPath, name, startStamp, endStamp):
+def ExtractFactor_Dst(tempPath, name, startStamp, endStamp, savePath):
     dataList = []
     timeDict = {}
 
@@ -304,21 +293,6 @@ def ExtractFactor_Dst(tempPath, name, startStamp, endStamp):
     maxSize = GetMaxSize(timeDict)
     hostGroup = GetHostGroup(timeDict, 'Src IP Addr')
 
-    # for t in maxSize:
-    #     print t
-    #     print "maxSize  : " + str(maxSize[t])
-    #     print "- - - - - -  - - - - - - -"
-    #     print
-
-    # for t in hostGroup:
-    #     print t
-    #     print "hostGroup: "
-    #     for item in hostGroup[t]:
-    #         print item
-    #     print "= = = = = =  = = = = = = ="
-    #     print
-
-
     i = 1
     n = 72
     thr_sigma = 0
@@ -347,22 +321,19 @@ def ExtractFactor_Dst(tempPath, name, startStamp, endStamp):
     else:
         PSS = pss_sigma / AC
 
-    print "Server IP: " + name[:-4]
-    print "THR =      " + str(THR)
-    print "AC =       " + str(AC)
-    print "PSS =      " + str(PSS)
-    print "= = = = = = = = = = = = ="
-    print
+    result = [name[:-4], str(THR), str(AC), str(PSS)]
+    with open(savePath, 'ab') as f:
+        writer = csv.writer(f)
+        writer.writerow(result)
 
-
-def PartII(tempPath, startStamp, endStamp):
+def PartII(tempPath, startStamp, endStamp, savePath):
     t = 0 # 72 hours: t0 ~ t71
     escapeIP = []
     for root, dirs, files in os.walk(tempPath + '\\srcServer'):
         for name in files:
             # print name
             # path = os.path.join(root, name)
-            escapeIP += ExtractFactor_Src(tempPath, name, startStamp, endStamp)
+            escapeIP += ExtractFactor_Src(tempPath, name, startStamp, endStamp, savePath)
 
     # Src OK
     print "Src OK"
@@ -371,24 +342,22 @@ def PartII(tempPath, startStamp, endStamp):
     print "len(escapeIP): " + str(len(escapeIP))
     print "escapeIP"
     for name in escapeIP:
-        ExtractFactor_Dst(tempPath, name, startStamp, endStamp)
+        ExtractFactor_Dst(tempPath, name, startStamp, endStamp, savePath)
     print "Dst OK"
     pass
 
 
 if __name__ == '__main__':
     filePath = 'D:\\Botnet\\record'
-    tempPath = 'D:\\Botnet\\TempFile_old'
-    savePath = 'D:\\Botnet\\WBDetector'
+    tempPath = 'D:\\Botnet\\TempAgain'
+    savePath = 'D:\\Botnet\\WBDetector\\FactorRecord.csv'
+
+    result = ["IP", "THR", "AC", "PSS"]
+    with open(savePath, 'ab') as f:
+        writer = csv.writer(f)
+        writer.writerow(result)
+
     startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     # PartI(filePath, tempPath)
-    # dataList = ReadServerFile(tempPath + '\\srcServer\\140.115.135.31.txt')
-    # timeDict = SplitByHour(dataList, startStamp)
-    # for item in timeDict:
-    #     print item
-    #     for row in timeDict[item]:
-    #         print row
-    #     print
-    #     print
     PartII(tempPath, startStamp, endStamp, savePath)
