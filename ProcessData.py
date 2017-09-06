@@ -212,7 +212,7 @@ def MergeHostGroup(hostGroupSrc, hostGroupDst):
             hostGroup.update({t:hostGroupDst.get(t)})
     return hostGroup
 
-def ExtractFactor(tempPath, name, startStamp, endStamp):
+def ExtractFactor_Src(tempPath, name, startStamp, endStamp):
     dataList = []
     timeDict = {}
 
@@ -289,6 +289,72 @@ def ExtractFactor(tempPath, name, startStamp, endStamp):
 
     return escapeIP
 
+def ExtractFactor_Dst(tempPath, name, startStamp, endStamp):
+    dataList = []
+    timeDict = {}
+
+    maxSize = {}   # k: timeInterval, v: byte
+    hostGroup = {} # k: timeInterval, v: set(hostIP)
+
+    escapeIP = []
+
+    path = tempPath + '\\dstServer\\' + name
+    dataList = ReadServerFile(path)
+    timeDict = SplitByHour(dataList, startStamp, endStamp)
+    maxSize = GetMaxSize(timeDict)
+    hostGroup = GetHostGroup(timeDict, 'Src IP Addr')
+
+    # for t in maxSize:
+    #     print t
+    #     print "maxSize  : " + str(maxSize[t])
+    #     print "- - - - - -  - - - - - - -"
+    #     print
+
+    # for t in hostGroup:
+    #     print t
+    #     print "hostGroup: "
+    #     for item in hostGroup[t]:
+    #         print item
+    #     print "= = = = = =  = = = = = = ="
+    #     print
+
+
+    i = 1
+    n = 72
+    thr_sigma = 0
+    acs_sigma = 0
+    pss_sigma = 0
+
+    while i < 72:
+        if hostGroup.get(i-1) == None:
+            hostGroup.update({i-1:[]})
+        if hostGroup.get(i) == None:
+            hostGroup.update({i:[]})
+        if maxSize.get(i) == None:
+            maxSize.update({i:0})
+
+        if len(set(hostGroup.get(i))) > 0:
+            thr_sigma += float(len(set(hostGroup.get(i-1)) & set(hostGroup.get(i)))) / len(set(hostGroup.get(i)))
+        acs_sigma += len(set(hostGroup.get(i)))
+        pss_sigma += maxSize.get(i)
+
+        i += 1
+
+    THR = thr_sigma / n
+    AC = acs_sigma
+    if (AC == 0) & (pss_sigma == 0):
+        PSS = 0
+    else:
+        PSS = pss_sigma / AC
+
+    print "Server IP: " + name[:-4]
+    print "THR =      " + str(THR)
+    print "AC =       " + str(AC)
+    print "PSS =      " + str(PSS)
+    print "= = = = = = = = = = = = ="
+    print
+
+
 def PartII(tempPath, startStamp, endStamp):
     t = 0 # 72 hours: t0 ~ t71
     escapeIP = []
@@ -296,21 +362,24 @@ def PartII(tempPath, startStamp, endStamp):
         for name in files:
             # print name
             # path = os.path.join(root, name)
-            escapeIP += ExtractFactor(tempPath, name, startStamp, endStamp)
+            escapeIP += ExtractFactor_Src(tempPath, name, startStamp, endStamp)
 
     # Src OK
+    print "Src OK"
     # Process the ip not in escapeIP
     escapeIP = set(escapeIP)
     print "len(escapeIP): " + str(len(escapeIP))
     print "escapeIP"
-    for ip in escapeIP:
-        print ip
+    for name in escapeIP:
+        ExtractFactor_Dst(tempPath, name, startStamp, endStamp)
+    print "Dst OK"
     pass
 
 
 if __name__ == '__main__':
     filePath = 'D:\\Botnet\\record'
     tempPath = 'D:\\Botnet\\TempFile_old'
+    savePath = 'D:\\Botnet\\WBDetector'
     startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     # PartI(filePath, tempPath)
@@ -322,4 +391,4 @@ if __name__ == '__main__':
     #         print row
     #     print
     #     print
-    PartII(tempPath, startStamp, endStamp)
+    PartII(tempPath, startStamp, endStamp, savePath)
