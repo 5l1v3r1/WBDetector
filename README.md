@@ -20,8 +20,8 @@ implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 可先拿去白色主機跑, 但記憶體還是不夠用, 一條龍可能不適合
 
 ### 做部分資料整理後, 先存檔備用
-每個檔案都先做 step 1~3, 依照 IP 存成 txt 檔
-再個別從每個檔案取出所需參數
+每個檔案都先做 step 1~3, 依照 IP 存成 txt 檔  
+再個別從每個檔案取出所需參數  
 已完成, 並等待論文作者確認觀念
 
 ## Formula Parameter
