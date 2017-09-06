@@ -339,8 +339,8 @@ def PartII(tempPath, startStamp, endStamp, savePath):
     print "Src OK"
     # Process the ip not in escapeIP
     escapeIP = set(escapeIP)
-    print "len(escapeIP): " + str(len(escapeIP))
-    print "escapeIP"
+    # print "len(escapeIP): " + str(len(escapeIP))
+    # print "escapeIP"
     for name in escapeIP:
         ExtractFactor_Dst(tempPath, name, startStamp, endStamp, savePath)
     print "Dst OK"
@@ -351,6 +351,9 @@ if __name__ == '__main__':
     filePath = 'D:\\Botnet\\record'
     tempPath = 'D:\\Botnet\\TempAgain'
     savePath = 'D:\\Botnet\\WBDetector\\FactorRecord.csv'
+
+    if os.path.exists(savePath):
+        os.remove(savePath)
 
     result = ["IP", "THR", "AC", "PSS"]
     with open(savePath, 'ab') as f:
