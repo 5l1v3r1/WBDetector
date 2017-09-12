@@ -77,7 +77,7 @@ def SeparateByIP(serverList):
     serverDict = {}
     newDictList = []
     i = 0
-    selectIP = serverList.get('Src IP Addr')
+    selectIP = serverList[0].get('Src IP Addr')
     while i < len(serverList):
         if serverList[i].get('Src IP Addr') == selectIP:
             newDictList.append(serverList[i])
@@ -118,10 +118,10 @@ def PartI(filePath, tempPath):
             serverList = ReduceByPort(dataList)
 
             if len(serverList) > 0:
-                srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
+                srcDict = SeparateByIP(serverList)
 
             for k in srcDict:
-                outFile = open(tempPath + '\\srcServer\\' + k + ".txt", 'a')
+                outFile = open(tempPath + '\\' + k + ".txt", 'a')
                 for row in srcDict[k]:
                     outFile.write(str(row) + "\n")
 
@@ -204,12 +204,12 @@ def ExtractFactor(path, startStamp, endStamp, savePath):
     hostGroup = GetHostGroup(timeDict)
 
     i = 1
-    n = 72
+    n = 48
     thr_sigma = 0
     acs_sigma = 0
     pss_sigma = 0
 
-    while i < 72:
+    while i < 48:
         if hostGroup.get(i-1) == None:
             hostGroup.update({i-1:[]})
         if hostGroup.get(i) == None:
@@ -231,24 +231,24 @@ def ExtractFactor(path, startStamp, endStamp, savePath):
     else:
         PSS = pss_sigma / AC
 
-    result = [name[:-4], str(THR), str(AC), str(PSS)]
+    result = [path[19:-4], str(THR), str(AC), str(PSS)]
     with open(savePath, 'ab') as f:
         writer = csv.writer(f)
         writer.writerow(result)
 
-
 def PartII(tempPath, startStamp, endStamp, savePath):
-    t = 0 # 72 hours: t0 ~ t71
-    escapeIP = []
+    count = 0
     for root, dirs, files in os.walk(tempPath):
         for name in files:
             path = os.path.join(root, name)
             ExtractFactor(path, startStamp, endStamp, savePath)
+            count += 1
+            print "Process Rate: " + str(count) + " / " + str(len(files))
 
 if __name__ == '__main__':
     filePath = 'D:\\Botnet\\record'
-    tempPath = 'D:\\Botnet\\TempAgain'
-    savePath = 'D:\\Botnet\\WBDetector\\FactorRecord.csv'
+    tempPath = 'D:\\Botnet\\TempFile'
+    savePath = 'D:\\Botnet\\WBDetector\\FactorRecord_Mar06_07.csv'
 
     if os.path.exists(savePath):
         os.remove(savePath)
@@ -258,7 +258,7 @@ if __name__ == '__main__':
         writer = csv.writer(f)
         writer.writerow(result)
 
-    startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    startStamp = datetime.datetime.strptime("2017-03-06 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    endStamp = datetime.datetime.strptime("2017-03-07 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     # PartI(filePath, tempPath)
     PartII(tempPath, startStamp, endStamp, savePath)
