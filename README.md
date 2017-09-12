@@ -1,7 +1,7 @@
 # WBDetector
 implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 
-## NetFlow Data
+## NetFlow Data (與作者確認後, 確定只計入 Src 部分)
 檔案依時間排序，但同一 time stamp 可能出現在不同檔案中
 1. 預處理 csv 檔, 不完整的 row data 就丟掉,  
 => return dataList [{}...{}]
@@ -22,8 +22,6 @@ implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 ### 做部分資料整理後, 先存檔備用
 每個檔案都先做 step 1~3, 依照 IP 存成 txt 檔  
 再個別從每個檔案取出所需參數  
-
-#### 只計 Src 部分, 修正完即可
 
 ## Formula Parameter
 ### THRs: 
