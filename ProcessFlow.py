@@ -9,7 +9,7 @@ from datetime import timedelta
 
 # Preprocessing a csv file, and drop data which is not complete
 # Return a dict-list of data
-def Csv2DictList(filePath):
+def Csv2DataList(filePath):
     sourceFile = open(filePath, 'r')
     fieldName = ['Date flow start','Duration','Proto','Src IP Addr','Src Port',
                  'Dst IP Addr','Dst Port','Packets','Bytes','Flow']
@@ -114,7 +114,7 @@ def PartI(filePath, tempPath):
             filePath = os.path.join(root, name)
 
             dataList = []
-            dataList = Csv2DictList(filePath)
+            dataList = Csv2DataList(filePath)
             serverList = ReduceByPort(dataList)
 
             if len(serverList) > 0:
