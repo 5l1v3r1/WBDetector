@@ -1,4 +1,4 @@
-
+# Excute in ~/Desktop/ISOT_Botnet_Dataset_2010
 
 import os
 
