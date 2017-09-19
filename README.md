@@ -45,5 +45,11 @@ tcpdump -r ISOT_Botnet_DataSet_2010.pcap -w newfiles -C 10
 再用 tshark 將檔案取出需要欄位後, 倒入 txt 檔  
   
 ### ProcessISOT.py
-將 txt 檔 依照上述方式, 發現無法在整理出來的資料中找到 malicious IP,  
+
+#### Sol_1
+將 txt 檔 依照上述方式處理
+
+#### Sol_2  
+發現無法在整理出來的資料中找到 malicious IP,  
 故決定不以 port 作為篩資料的標準(略過 step2), 再做一次  
+先針對 malicious IP 去看 traffic 時間, 再看如何切開大區間, 才能依小時再切  

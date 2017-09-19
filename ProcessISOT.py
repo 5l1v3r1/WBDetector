@@ -216,12 +216,13 @@ def ExtractFactor(path, startStamp, endStamp, savePath):
         writer = csv.writer(f)
         writer.writerow(result)
 
-def PartII(tempPath, startStamp, endStamp, savePath):
+def PartII(tempPath, startStamp, endStamp, savePath, maliciousIP):
     count = 0
     for root, dirs, files in os.walk(tempPath):
         for name in files:
-            path = os.path.join(root, name)
-            ExtractFactor(path, startStamp, endStamp, savePath)
+            if name in maliciousIP:
+                path = os.path.join(root, name)
+                ExtractFactor(path, startStamp, endStamp, savePath)
             count += 1
             print "Process Rate: " + str(count) + " / " + str(len(files))
 
@@ -229,7 +230,23 @@ if __name__ == '__main__':
 
     filePath = "D:\\Botnet\\isotCSV"
     tempPath = "D:\\Botnet\\TempISOT_withoutPort"
-    # savePath = 'D:\\Botnet\\WBDetector\\SuspiciousIP.csv'
+    savePath = 'D:\\Botnet\\WBDetector\\ISOT_IP_without.csv'
 
-    PartI(filePath, tempPath)
-    # PartII(tempPath, startStamp, endStamp, savePath)
+    maliciousIP = ['172.16.2.11', '172.16.0.2', '172.16.0.11', '172.16.0.12', \
+                   '172.16.2.2', '172.16.2.3', '172.16.2.11', '172.16.2.12', \
+                   '172.16.2.12', '172.16.2.12', '172.16.2.13', '172.16.2.14', \
+                   '172.16.2.111', '172.16.2.112', '172.16.2.113', '172.16.2.114' ]
+
+    # PartI(filePath, tempPath)
+    if os.path.exists(savePath):
+        os.remove(savePath)
+
+    result = ["IP", "THR", "AC", "PSS"]
+    with open(savePath, 'ab') as f:
+        writer = csv.writer(f)
+        writer.writerow(result)
+
+    startStamp = datetime.datetime.strptime("2017-03-06 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    endStamp = datetime.datetime.strptime("2017-03-07 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    # PartI(filePath, tempPath)
+    PartII(tempPath, startStamp, endStamp, savePath)
