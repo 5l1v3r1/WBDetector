@@ -42,6 +42,8 @@ ISOT.pcap 用 nfdump 出現 bad magic error, 但用 wireshark 開得起來
 因檔案過大. wireshark 要開很久, 所以用  
 tcpdump -r ISOT_Botnet_DataSet_2010.pcap -w newfiles -C 10  
 將原始檔案切成每個 10MB 的檔案, 共切出了 1140 個檔案  
-再用 tshark 將檔案取出需要欄位後, 倒入 csv 檔  
+再用 tshark 將檔案取出需要欄位後, 倒入 txt 檔  
   
-NEXT WORK: ProcessISOT.py
+### ProcessISOT.py
+將 txt 檔 依照上述方式, 發現無法在整理出來的資料中找到 malicious IP,  
+故決定不以 port 作為篩資料的標準(略過 step2), 再做一次  

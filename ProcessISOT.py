@@ -37,11 +37,15 @@ def Text2DataList(filePath):
     return dataList
 
 def ReduceByPort(dataList):
-    serverList = []
+    serverList = dataList
 
+    # Skip selecting port
+    """
+    serverList = []
     for data in dataList:
         if (data.get('Src Port') == '443') | (data.get('Src Port') == '80'):
-            serverList.append(data)
+                serverList.append(data)
+    """
 
     # Sort by IP address
     serverList = sorted(serverList, key=lambda k: k['Src IP Addr'])
@@ -224,9 +228,8 @@ def PartII(tempPath, startStamp, endStamp, savePath):
 if __name__ == '__main__':
 
     filePath = "D:\\Botnet\\isotCSV"
-    tempPath = "D:\\Botnet\\TempISOT"
-    savePath = 'D:\\Botnet\\WBDetector\\FactorRecord_Mar06_07.csv'
-    savePath = 'D:\\Botnet\\WBDetector\\SuspiciousIP.csv'
+    tempPath = "D:\\Botnet\\TempISOT_withoutPort"
+    # savePath = 'D:\\Botnet\\WBDetector\\SuspiciousIP.csv'
 
-    # PartI(filePath, tempPath)
-    PartII(tempPath, startStamp, endStamp, savePath)
+    PartI(filePath, tempPath)
+    # PartII(tempPath, startStamp, endStamp, savePath)
