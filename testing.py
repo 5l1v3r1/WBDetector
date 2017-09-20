@@ -1,13 +1,14 @@
 import os
 import csv
 import datetime
+from datetime import timedelta
 
-savePath = 'D:\\Botnet\\WBDetector\\FactorRecord.csv'
-result = [1, 2, 3]
+# savePath = 'D:\\Botnet\\WBDetector\\FactorRecord.csv'
+# result = [1, 2, 3]
 
-with open(savePath, 'ab') as f:
-    writer = csv.writer(f)
-    writer.writerow(result)
+# with open(savePath, 'ab') as f:
+#     writer = csv.writer(f)
+#     writer.writerow(result)
 
 # def F(serverDict, startStamp):
 #     # Return a new serverDict may be better
@@ -47,7 +48,12 @@ with open(savePath, 'ab') as f:
 #     return t
 
 
-# t0 = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+t0 = datetime.datetime.strptime("2007-10-08 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+t1 = t0 + timedelta(hours = 47)
+
+# print t0
+print t1
+
 # t1 = datetime.datetime.strptime("2017-03-01 00:59:00.000", "%Y-%m-%d %H:%M:%S.%f")
 # t2 = datetime.datetime.strptime("2017-03-01 02:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 # t3 = datetime.datetime.strptime("2017-03-01 03:05:00.080", "%Y-%m-%d %H:%M:%S.%f")
