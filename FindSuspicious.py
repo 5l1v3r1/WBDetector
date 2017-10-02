@@ -5,9 +5,9 @@ import os
 import csv
 
 # Use the maximum of each factor to do judgement
-thershold_THR = 0.59879
-thershold_AC = 739
-thershold_PSS = 155.5227
+thershold_THR = 0.000735294117647
+thershold_AC = 255
+thershold_PSS = 5.93725490196
 
 # Count the times of IP be judged as a malicious IP
 countDict = {}
