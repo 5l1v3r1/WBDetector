@@ -14,19 +14,21 @@ class DataToFactors():
         self.filePath = 'D:\\Botnet\\record'
         self.tempPath = 'D:\\Botnet\\TempFile-revise'
         self.savePath = 'D:\\Botnet\\revise\\FactorRecord.csv'
+        self.startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+        self.endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 
-        if not os.path.exists(tempPath):
-            os.mkdir(tempPath)
+        if not os.path.exists(self.tempPath):
+            os.mkdir(self.tempPath)
 
-        if os.path.exists(savePath):
-            os.remove(savePath)
+        if os.path.exists(self.savePath):
+            os.remove(self.savePath)
         pass
 
-######################### Arrange Data #########################
+    ######################### Arrange Data #########################
 
     # Preprocess a csv file, and drop data which is not complete
     # Return a dict-list of data
-    def Csv2DictList(filePath):
+    def Csv2DictList(self, filePath):
         sourceFile = open(filePath, 'r')
         fieldName = ['Date flow start','Duration','Proto','Src IP Addr','Src Port',
                      'Dst IP Addr','Dst Port','Packets','Bytes','Flow']
@@ -79,7 +81,7 @@ class DataToFactors():
     # Pick port number == 443 or 8080 
     # Seperate from src and dst
     # Return a summary list of 2 list
-    def ReduceByPort(dataList):
+    def ReduceByPort(self, dataList):
         srcList = []
         dstList = []
         serverList = []
@@ -95,7 +97,7 @@ class DataToFactors():
         return serverList
 
     # Create dict for each IP in serverLis
-    def SeparateByIP(serverList, type):
+    def SeparateByIP(self, serverList, type):
         serverDict = {}
         newDictList = []
         i = 0
@@ -126,7 +128,7 @@ class DataToFactors():
         return serverDict
 
     # Use the functions above to arrange data
-    def ArrangeData(filePath, tempPath):
+    def ArrangeData(self, filePath, tempPath):
         if not os.path.exists(tempPath + '\\srcServer'):
             os.mkdir(tempPath + '\\srcServer')
         if not os.path.exists(tempPath + '\\dstServer'):
@@ -160,6 +162,144 @@ class DataToFactors():
 
                 print "Process Rate: " + str(count) + " / " + str(len(files))
 
+    ####################### Extract Factors ########################
+
+    def ReadServerFile(self, path):
+        dataList = []
+        try:
+            file = open(path, 'r')
+            for line in file:
+                dataList.append(eval(line))
+        except Exception as e:
+            print e
+
+
+        return dataList
+
+    def Time2Interval(self, time, startStamp):
+        t = (time - startStamp).days, (time - startStamp).seconds//3600
+        return t[0] * 24 + t[1]
+
+    def SplitByHour(self, dataList, startStamp, endStamp):
+        tempList = []           # Data will be stored in 'tempList' hour by hour
+        timeDict = {}           # Create a dict to store data with {timeInterval:tempList}
+
+        for row in dataList:
+            if row.get('Date flow start') < startStamp:
+                pass
+            elif row.get('Date flow start') >= endStamp:
+                pass
+            else:
+                timeInterval = Time2Interval(row.get('Date flow start'), startStamp)
+                if timeInterval in timeDict:
+                    tempList = timeDict.get(timeInterval)
+                else:
+                    tempList = []
+
+                tempList.append(row)
+                timeDict.update({timeInterval:tempList})
+        return timeDict
+
+    def GetMaxSize(self, timeDict):
+        maxSize = {}
+        for t in timeDict:
+            maxByte = 0.0
+            for row in timeDict[t]:
+                size = row.get('Bytes')
+                if size.endswith('K'):
+                    size = float(size.replace('K', '')) * 1024
+                    row.update({'Bytes':size})
+                elif size.endswith('M'):
+                    size = float(size.replace('M', '')) * 1024 * 1024
+                    row.update({'Bytes':size})
+
+                if float(row.get('Bytes')) > maxByte:
+                    maxByte = float(row.get('Bytes'))
+            maxSize.update({t:maxByte})
+        return maxSize
+
+    def GetHostGroup(self, timeDict, selectType):
+        hostGroup = {}
+        for t in timeDict:
+            hosts = []
+            for row in timeDict[t]:
+                hosts.append(row.get(selectType))
+            hosts = set(hosts)
+            hostGroup.update({t:hosts})
+        return hostGroup
+
+    def MergeHostGroup(self, hostGroupSrc, hostGroupDst):
+        hostGroup = {}
+        hostGroup = hostGroupSrc
+
+        for t in hostGroupDst:
+            if t in hostGroup:
+                newHosts = hostGroup.get(t) | hostGroupDst.get(t)
+                hostGroup.update({t:newHosts})
+            else:
+                hostGroup.update({t:hostGroupDst.get(t)})
+        return hostGroup
+
+    def ExtractFactor(self, tempPath, name, startStamp, endStamp, savePath):
+        dataList = []
+        timeDict = {}
+
+        maxSize = {}   # k: timeInterval, v: byte
+        hostGroupSrc = {} # k: timeInterval, v: set(hostIP)
+
+        escapeIP = []
+
+        path = tempPath + '\\srcServer\\' + name
+        dataList = ReadServerFile(path)
+        timeDict = SplitByHour(dataList, startStamp, endStamp)
+        maxSize = GetMaxSize(timeDict)
+        hostGroupSrc = GetHostGroup(timeDict, 'Dst IP Addr')
+
+        # If the srcIP in dstServer, the hostgroup should be union
+        path = tempPath + '\\dstServer\\' + name
+        if os.path.exists(path):
+            escapeIP.append(name)
+            dataList = ReadServerFile(path)
+            SplitByHour(dataList, startStamp, endStamp)
+            hostGroupDst = GetHostGroup(timeDict, 'Src IP Addr')
+            hostGroup = MergeHostGroup(hostGroupSrc, hostGroupDst)
+        else:
+            hostGroup = hostGroupSrc
+
+        i = 1
+        n = 72
+        thr_sigma = 0
+        acs_sigma = 0
+        pss_sigma = 0
+
+        while i < 72:
+            if hostGroup.get(i-1) == None:
+                hostGroup.update({i-1:[]})
+            if hostGroup.get(i) == None:
+                hostGroup.update({i:[]})
+            if maxSize.get(i) == None:
+                maxSize.update({i:0})
+
+            if len(set(hostGroup.get(i))) > 0:
+                thr_sigma += float(len(set(hostGroup.get(i-1)) & set(hostGroup.get(i)))) / len(set(hostGroup.get(i)))
+            acs_sigma += len(set(hostGroup.get(i)))
+            pss_sigma += maxSize.get(i)
+
+            i += 1
+
+        THR = thr_sigma / n
+        AC = acs_sigma
+        if (AC == 0) & (pss_sigma == 0):
+            PSS = 0
+        else:
+            PSS = pss_sigma / AC
+
+        result = [name[:-4], str(THR), str(AC), str(PSS)]
+        with open(savePath, 'ab') as f:
+            writer = csv.writer(f)
+            writer.writerow(result)
+
+        return escapeIP
 
 
 if __name__ == '__main__':
