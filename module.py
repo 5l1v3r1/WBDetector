@@ -10,12 +10,12 @@ from datetime import timedelta
 class DataToFactors():
 
     # Declare variables and check paths are fine.
-    def __init__(self):
-        self.filePath = 'D:\\Botnet\\record'
-        self.tempPath = 'D:\\Botnet\\TempFile-revise'
-        self.savePath = 'D:\\Botnet\\revise\\FactorRecord.csv'
-        self.startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-        self.endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    def __init__(self, filePath, tempPath, savePath, startStamp, endStamp):
+        self.filePath = filePath
+        self.tempPath = tempPath
+        self.savePath = savePath
+        self.startStamp = startStamp
+        self.endStamp = endStamp
 
         if not os.path.exists(self.tempPath):
             os.mkdir(self.tempPath)
@@ -142,13 +142,13 @@ class DataToFactors():
                 filePath = os.path.join(root, name)
 
                 dataList = []
-                dataList = Csv2DictList(filePath)
-                serverList = ReduceByPort(dataList)
+                dataList = self.Csv2DictList(filePath)
+                serverList = self.ReduceByPort(dataList)
 
                 if len(serverList[0]) > 0:
-                    srcDict = SeparateByIP(serverList[0], 'Src IP Addr')
+                    srcDict = self.SeparateByIP(serverList[0], 'Src IP Addr')
                 if len(serverList[1]) > 0:
-                    dstDict = SeparateByIP(serverList[1], 'Dst IP Addr')
+                    dstDict = self.SeparateByIP(serverList[1], 'Dst IP Addr')
 
                 for k in srcDict:
                     outFile = open(tempPath + '\\srcServer\\' + k + ".txt", 'a')
@@ -190,7 +190,7 @@ class DataToFactors():
             elif row.get('Date flow start') >= endStamp:
                 pass
             else:
-                timeInterval = Time2Interval(row.get('Date flow start'), startStamp)
+                timeInterval = self.Time2Interval(row.get('Date flow start'), startStamp)
                 if timeInterval in timeDict:
                     tempList = timeDict.get(timeInterval)
                 else:
@@ -240,7 +240,7 @@ class DataToFactors():
                 hostGroup.update({t:hostGroupDst.get(t)})
         return hostGroup
 
-    def ExtractFactor(self, tempPath, name, startStamp, endStamp, savePath):
+    def ExtractOne(self, tempPath, name, startStamp, endStamp, savePath):
         dataList = []
         timeDict = {}
 
@@ -250,19 +250,19 @@ class DataToFactors():
         escapeIP = []
 
         path = tempPath + '\\srcServer\\' + name
-        dataList = ReadServerFile(path)
-        timeDict = SplitByHour(dataList, startStamp, endStamp)
-        maxSize = GetMaxSize(timeDict)
-        hostGroupSrc = GetHostGroup(timeDict, 'Dst IP Addr')
+        dataList = self.ReadServerFile(path)
+        timeDict = self.SplitByHour(dataList, startStamp, endStamp)
+        maxSize = self.GetMaxSize(timeDict)
+        hostGroupSrc = self.GetHostGroup(timeDict, 'Dst IP Addr')
 
         # If the srcIP in dstServer, the hostgroup should be union
         path = tempPath + '\\dstServer\\' + name
         if os.path.exists(path):
             escapeIP.append(name)
-            dataList = ReadServerFile(path)
-            SplitByHour(dataList, startStamp, endStamp)
-            hostGroupDst = GetHostGroup(timeDict, 'Src IP Addr')
-            hostGroup = MergeHostGroup(hostGroupSrc, hostGroupDst)
+            dataList = self.ReadServerFile(path)
+            self.SplitByHour(dataList, startStamp, endStamp)
+            hostGroupDst = self.GetHostGroup(timeDict, 'Src IP Addr')
+            hostGroup = self.MergeHostGroup(hostGroupSrc, hostGroupDst)
         else:
             hostGroup = hostGroupSrc
 
@@ -301,11 +301,28 @@ class DataToFactors():
 
         return escapeIP
 
+    def ExtractFactors(self, tempPath, startStamp, endStamp, savePath):
+        t = 0 # 72 hours: t0 ~ t71
+        escapeIP = []
+        for root, dirs, files in os.walk(tempPath + '\\srcServer'):
+            for name in files:
+                # print name
+                # path = os.path.join(root, name)
+                escapeIP += self.ExtractOne(tempPath, name, startStamp, endStamp, savePath)
+        pass
 
 if __name__ == '__main__':
+    filePath = 'D:\\Botnet\\record'
+    tempPath = 'D:\\Botnet\\TempFile-revise'
+    savePath = 'D:\\Botnet\\revise\\recordFactor_02_05.csv'
+    startStamp = datetime.datetime.strptime("2017-03-02 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    endStamp = datetime.datetime.strptime("2017-03-05 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 
-    worker = DataToFactors()
-    print worker.filePath
-    print worker.tempPath
-    print worker.savePath
+    # Create a instance
+    worker = DataToFactors(filePath, tempPath, savePath, startStamp, endStamp)
+    # worker.ArrangeData(worker.filePath, worker.tempPath)
+    # print "TempFiles OK"
+    
+    worker.ExtractFactors(worker.tempPath, worker.startStamp, worker.endStamp, worker.savePath)
+    print "02_05 OK"
 

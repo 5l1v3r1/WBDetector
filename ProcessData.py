@@ -338,9 +338,12 @@ def PartII(tempPath, startStamp, endStamp, savePath):
 
 
 if __name__ == '__main__':
-    filePath = 'D:\\Botnet\\record'
-    tempPath = 'D:\\Botnet\\TempFile-revise'
-    savePath = 'D:\\Botnet\\revise\\FactorRecord.csv'
+    filePath = 'D:\\Botnet\\isotCSV'
+    tempPath = 'D:\\Botnet\\TempISOT-revise'
+    savePath = 'D:\\Botnet\\revise\\ISOT_04_07.csv'
+
+    startStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    endStamp = datetime.datetime.strptime("2017-03-07 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
 
     if not os.path.exists(tempPath):
         os.mkdir(tempPath)
@@ -355,7 +358,7 @@ if __name__ == '__main__':
     #     writer = csv.writer(f)
     #     writer.writerow(result)
 
-    # startStamp = datetime.datetime.strptime("2017-03-01 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    # endStamp = datetime.datetime.strptime("2017-03-04 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    # # PartI(filePath, tempPath)
+
+
     # PartII(tempPath, startStamp, endStamp, savePath)
+    # print "OK"
