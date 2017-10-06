@@ -22,6 +22,12 @@ class DataToFactors():
 
         if os.path.exists(self.savePath):
             os.remove(self.savePath)
+
+        result = ["IP", "THR", "AC", "PSS"]
+        with open(savePath, 'ab') as f:
+            writer = csv.writer(f)
+            writer.writerow(result)
+
         pass
 
     ######################### Arrange Data #########################
@@ -78,6 +84,35 @@ class DataToFactors():
         sourceFile.close()
         return dataList
 
+    # Take all the data in Malicious Dataset
+    def Text2DataList(filePath):
+        fieldName = ['Date flow start', 'Proto', 'Src IP Addr', 'Dst IP Addr', 'Src Port', 'Dst Port', 'Bytes']
+
+        count = 0
+        dataList = []
+        file = open(filePath, 'r')
+        for line in file:
+            count += 1
+            tempDict = {}
+            data = []
+            data.append(datetime.datetime.strptime(line[:28], "%b %d, %Y %H:%M:%S.%f"))
+
+            line = re.split("\t|,", line[36:-1])
+            line = filter(None, line)
+
+            if len(line) < 6:
+                print "Column too few: " + filePath + ", at line: " + str(count)
+
+            else:
+                data += line
+                i = 0
+                for name in fieldName:
+                    tempDict[name] = data[i]
+                    i += 1
+                dataList.append(tempDict)
+
+        return dataList
+
     # Pick port number == 443 or 8080 
     # Seperate from src and dst
     # Return a summary list of 2 list
@@ -86,9 +121,9 @@ class DataToFactors():
         dstList = []
         serverList = []
         for data in dataList:
-            if (data.get('Src Port') == '443') | (data.get('Src Port') == '8080'):
+            if (data.get('Src Port') == '443') | (data.get('Src Port') == '8080') | (data.get('Src Port') == '80'):
                 srcList.append(data)
-            if (data.get('Dst Port') == '443') | (data.get('Dst Port') == '8080'):
+            if (data.get('Dst Port') == '443') | (data.get('Dst Port') == '8080') | (data.get('Src Port') == '8080'):
                 dstList.append(data)
         srcList = sorted(srcList, key=lambda k: k['Src IP Addr']) # Sort by IP address
         dstList = sorted(dstList, key=lambda k: k['Dst IP Addr']) # Sort by IP address
@@ -145,18 +180,23 @@ class DataToFactors():
                 dataList = self.Csv2DictList(filePath)
                 serverList = self.ReduceByPort(dataList)
 
+                srcDict = {}
+                dstDict = {}
+
                 if len(serverList[0]) > 0:
                     srcDict = self.SeparateByIP(serverList[0], 'Src IP Addr')
                 if len(serverList[1]) > 0:
                     dstDict = self.SeparateByIP(serverList[1], 'Dst IP Addr')
 
                 for k in srcDict:
-                    outFile = open(tempPath + '\\srcServer\\' + k + ".txt", 'a')
+                    # outFile = open(tempPath + '\\srcServer\\' + k + ".txt", 'a')
+                    outFile = open(tempPath + '/srcServer/' + k + ".txt", 'a')
                     for row in srcDict[k]:
                         outFile.write(str(row) + "\n")
 
                 for k in dstDict:
-                    outFile = open(tempPath + '\\dstServer\\' + k + ".txt", 'a')
+                    # outFile = open(tempPath + '\\dstServer\\' + k + ".txt", 'a')
+                    outFile = open(tempPath + '/dstServer/' + k + ".txt", 'a')
                     for row in dstDict[k]:
                         outFile.write(str(row) + "\n")
 
@@ -312,17 +352,28 @@ class DataToFactors():
         pass
 
 if __name__ == '__main__':
-    filePath = 'D:\\Botnet\\record'
-    tempPath = 'D:\\Botnet\\TempFile-revise'
-    savePath = 'D:\\Botnet\\revise\\recordFactor_02_05.csv'
+    
+    """ NCU data
+    filePath = "D:\\Botnet\\record"
+    tempPath = "D:\\Botnet\\TempFile-revise"
+    savePath = "D:\\Botnet\\revise\\recordFactor_02_05.csv"
     startStamp = datetime.datetime.strptime("2017-03-02 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     endStamp = datetime.datetime.strptime("2017-03-05 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    """
 
+    # """ BOTNET data
+    filePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/splited"
+    tempPath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/tempFile"
+    savePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/Factors.csv"
+    startStamp = datetime.datetime.strptime("2014-02-20 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    endStamp = datetime.datetime.strptime("2014-04-07 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    # """
+    
     # Create a instance
     worker = DataToFactors(filePath, tempPath, savePath, startStamp, endStamp)
+
     # worker.ArrangeData(worker.filePath, worker.tempPath)
     # print "TempFiles OK"
     
     worker.ExtractFactors(worker.tempPath, worker.startStamp, worker.endStamp, worker.savePath)
-    print "02_05 OK"
-
+    print "FactorsFils OK"
