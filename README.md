@@ -37,3 +37,7 @@ implement Detecting Web-based Botnets Using Bot Communication Traffic Features
 ### PSSs:
 1. 每個 time interval 中, 最大的 payload
 2. ACs
+
+## 待完成功能
+1. 每三天輸出一個 factor.csv  
+2. newfile 分到各資料夾  
