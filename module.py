@@ -7,15 +7,19 @@ import csv
 import datetime
 from datetime import timedelta
 
+class PcapToData():
+    pass    
+
 class DataToFactors():
 
     # Declare variables and check paths are fine.
-    def __init__(self, filePath, tempPath, savePath, startStamp, endStamp):
+    def __init__(self, filePath, tempPath, savePath, startStamp, endStamp, isBotnet):
         self.filePath = filePath
         self.tempPath = tempPath
         self.savePath = savePath
         self.startStamp = startStamp
         self.endStamp = endStamp
+        self.isBotnet = isBotnet
 
         if not os.path.exists(self.tempPath):
             os.mkdir(self.tempPath)
@@ -85,7 +89,7 @@ class DataToFactors():
         return dataList
 
     # Take all the data in Malicious Dataset
-    def Text2DataList(filePath):
+    def Text2DataList(self, filePath):
         fieldName = ['Date flow start', 'Proto', 'Src IP Addr', 'Dst IP Addr', 'Src Port', 'Dst Port', 'Bytes']
 
         count = 0
@@ -95,7 +99,7 @@ class DataToFactors():
             count += 1
             tempDict = {}
             data = []
-            data.append(datetime.datetime.strptime(line[:28], "%b %d, %Y %H:%M:%S.%f"))
+            # data[0] = line[:28]
 
             line = re.split("\t|,", line[36:-1])
             line = filter(None, line)
@@ -104,10 +108,15 @@ class DataToFactors():
                 print "Column too few: " + filePath + ", at line: " + str(count)
 
             else:
-                data += line
+                # data += line
+                # data.append(line[:28])
+                line.insert(0, line[:28])
                 i = 0
                 for name in fieldName:
-                    tempDict[name] = data[i]
+                    if i == 0:
+                        row[name] = datetime.datetime.strptime(line[i], "%Y-%m-%d %H:%M:%S.%f")
+                    else:
+                        tempDict[name] = line[i]
                     i += 1
                 dataList.append(tempDict)
 
@@ -163,11 +172,16 @@ class DataToFactors():
         return serverDict
 
     # Use the functions above to arrange data
-    def ArrangeData(self, filePath, tempPath):
-        if not os.path.exists(tempPath + '\\srcServer'):
-            os.mkdir(tempPath + '\\srcServer')
-        if not os.path.exists(tempPath + '\\dstServer'):
-            os.mkdir(tempPath + '\\dstServer')
+    def ArrangeData(self, filePath, tempPath, isBotnet):
+        # if not os.path.exists(tempPath + '\\srcServer'):
+        #     os.mkdir(tempPath + '\\srcServer')
+        # if not os.path.exists(tempPath + '\\dstServer'):
+        #     os.mkdir(tempPath + '\\dstServer')
+
+        if not os.path.exists(tempPath + '/srcServer/'):
+            os.mkdir(tempPath + '/srcServer/')
+        if not os.path.exists(tempPath + '/dstServer/'):
+            os.mkdir(tempPath + '/dstServer/')
 
         for root, dirs, files in os.walk(filePath):
 
@@ -177,7 +191,10 @@ class DataToFactors():
                 filePath = os.path.join(root, name)
 
                 dataList = []
-                dataList = self.Csv2DictList(filePath)
+                if isBotnet:
+                    dataList = self.Text2DataList(filePath)
+                else:
+                    dataList = self.Csv2DictList(filePath)
                 serverList = self.ReduceByPort(dataList)
 
                 srcDict = {}
@@ -359,6 +376,7 @@ if __name__ == '__main__':
     savePath = "D:\\Botnet\\revise\\recordFactor_02_05.csv"
     startStamp = datetime.datetime.strptime("2017-03-02 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     endStamp = datetime.datetime.strptime("2017-03-05 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    isBotnet = False
     """
 
     # """ BOTNET data
@@ -367,13 +385,15 @@ if __name__ == '__main__':
     savePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/Factors.csv"
     startStamp = datetime.datetime.strptime("2014-02-20 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     endStamp = datetime.datetime.strptime("2014-04-07 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    isBotnet = True
     # """
+
     
     # Create a instance
-    worker = DataToFactors(filePath, tempPath, savePath, startStamp, endStamp)
+    worker = DataToFactors(filePath, tempPath, savePath, startStamp, endStamp, isBotnet)
 
-    # worker.ArrangeData(worker.filePath, worker.tempPath)
-    # print "TempFiles OK"
+    worker.ArrangeData(worker.filePath, worker.tempPath, worker.isBotnet)
+    print "TempFiles OK"
     
-    worker.ExtractFactors(worker.tempPath, worker.startStamp, worker.endStamp, worker.savePath)
-    print "FactorsFils OK"
+    # worker.ExtractFactors(worker.tempPath, worker.startStamp, worker.endStamp, worker.savePath)
+    # print "FactorsFils OK"
