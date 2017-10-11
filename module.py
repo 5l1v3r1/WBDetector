@@ -24,13 +24,8 @@ class DataToFactors():
         if not os.path.exists(self.tempPath):
             os.mkdir(self.tempPath)
 
-        if os.path.exists(self.savePath):
-            os.remove(self.savePath)
-
-        result = ["IP", "THR", "AC", "PSS"]
-        with open(savePath, 'ab') as f:
-            writer = csv.writer(f)
-            writer.writerow(result)
+        if not os.path.exists(self.savePath):
+            os.mkdir(self.savePath)
 
         pass
 
@@ -302,14 +297,16 @@ class DataToFactors():
 
         escapeIP = []
 
-        path = tempPath + '\\srcServer\\' + name
+        # path = tempPath + '\\srcServer\\' + name
+        path = tempPath + '/srcServer/' + name
         dataList = self.ReadServerFile(path)
         timeDict = self.SplitByHour(dataList, startStamp, endStamp)
         maxSize = self.GetMaxSize(timeDict)
         hostGroupSrc = self.GetHostGroup(timeDict, 'Dst IP Addr')
 
         # If the srcIP in dstServer, the hostgroup should be union
-        path = tempPath + '\\dstServer\\' + name
+        # path = tempPath + '\\dstServer\\' + name
+        path = tempPath + '/dstServer/' + name
         if os.path.exists(path):
             escapeIP.append(name)
             dataList = self.ReadServerFile(path)
@@ -320,12 +317,12 @@ class DataToFactors():
             hostGroup = hostGroupSrc
 
         i = 1
-        n = 72
+        n = 48
         thr_sigma = 0
         acs_sigma = 0
         pss_sigma = 0
 
-        while i < 72:
+        while i < 48:
             if hostGroup.get(i-1) == None:
                 hostGroup.update({i-1:[]})
             if hostGroup.get(i) == None:
@@ -355,13 +352,35 @@ class DataToFactors():
         return escapeIP
 
     def ExtractFactors(self, tempPath, startStamp, endStamp, savePath):
-        t = 0 # 72 hours: t0 ~ t71
-        escapeIP = []
-        for root, dirs, files in os.walk(tempPath + '\\srcServer'):
-            for name in files:
-                # print name
-                # path = os.path.join(root, name)
-                escapeIP += self.ExtractOne(tempPath, name, startStamp, endStamp, savePath)
+        t = self.Time2Interval(endStamp, startStamp)
+        
+        tempStart = startStamp
+        while tempStart < endStamp:
+            tempEnd = tempStart + timedelta(hours=2)
+            if tempEnd > endStamp:
+                break
+            
+            str_S = str(self.Time2Interval(tempStart, startStamp))
+            str_E = str(self.Time2Interval(tempEnd, startStamp))
+            tempSave = savePath + "/" + str_S + "_" + str_E + ".csv"
+
+            column = ["IP", "THR", "AC", "PSS"]
+            with open(tempSave, 'ab') as f:
+                writer = csv.writer(f)
+                writer.writerow(column)
+
+            escapeIP = []
+            # for root, dirs, files in os.walk(tempPath + '\\srcServer'):
+            for root, dirs, files in os.walk(tempPath + '/srcServer'):
+                for name in files:
+                    # print name
+                    # path = os.path.join(root, name)
+
+                    escapeIP += self.ExtractOne(tempPath, name, tempStart, tempEnd, tempSave)
+
+            tempStart = tempStart + timedelta(hours=1)
+
+            print "Process Rate: " + str(int(str_S)+1) + " / " + str(t-2)
         pass
 
 if __name__ == '__main__':
@@ -378,7 +397,7 @@ if __name__ == '__main__':
     # """ BOTNET data
     filePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/dumpTXT"
     tempPath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/tempFile"
-    savePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/Factors.csv"
+    savePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/Factors"
     startStamp = datetime.datetime.strptime("2014-02-20 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     endStamp = datetime.datetime.strptime("2014-04-07 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     isBotnet = True
@@ -388,8 +407,8 @@ if __name__ == '__main__':
     # Create a instance
     worker = DataToFactors(filePath, tempPath, savePath, startStamp, endStamp, isBotnet)
 
-    worker.ArrangeData(worker.filePath, worker.tempPath, worker.isBotnet)
-    print "TempFiles OK"
+    # worker.ArrangeData(worker.filePath, worker.tempPath, worker.isBotnet)
+    # print "TempFiles OK"
     
-    # worker.ExtractFactors(worker.tempPath, worker.startStamp, worker.endStamp, worker.savePath)
-    # print "FactorsFils OK"
+    worker.ExtractFactors(worker.tempPath, worker.startStamp, worker.endStamp, worker.savePath)
+    print "FactorsFils OK"
