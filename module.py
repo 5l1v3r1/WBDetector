@@ -92,36 +92,31 @@ class DataToFactors():
     def Text2DataList(self, filePath):
         fieldName = ['Date flow start', 'Proto', 'Src IP Addr', 'Dst IP Addr', 'Src Port', 'Dst Port', 'Bytes']
 
-        count = 0
+        # count = 0
         dataList = []
         file = open(filePath, 'r')
         for line in file:
-            count += 1
+            # count += 1
             tempDict = {}
             data = []
-            # data[0] = line[:28]
+            data.append(datetime.datetime.strptime(line[:28], "%b %d, %Y %H:%M:%S.%f"))
 
             line = re.split("\t|,", line[36:-1])
             line = filter(None, line)
 
             if len(line) < 6:
-                print "Column too few: " + filePath + ", at line: " + str(count)
+                pass
+                # print "Column too few: " + filePath + ", at line: " + str(count)
 
             else:
-                # data += line
-                # data.append(line[:28])
-                line.insert(0, line[:28])
+                data += line
                 i = 0
                 for name in fieldName:
-                    if i == 0:
-                        row[name] = datetime.datetime.strptime(line[i], "%Y-%m-%d %H:%M:%S.%f")
-                    else:
-                        tempDict[name] = line[i]
+                    tempDict[name] = data[i]
                     i += 1
                 dataList.append(tempDict)
 
         return dataList
-
     # Pick port number == 443 or 8080 
     # Seperate from src and dst
     # Return a summary list of 2 list
@@ -132,7 +127,7 @@ class DataToFactors():
         for data in dataList:
             if (data.get('Src Port') == '443') | (data.get('Src Port') == '8080') | (data.get('Src Port') == '80'):
                 srcList.append(data)
-            if (data.get('Dst Port') == '443') | (data.get('Dst Port') == '8080') | (data.get('Src Port') == '8080'):
+            if (data.get('Dst Port') == '443') | (data.get('Dst Port') == '8080') | (data.get('Dst Port') == '80'):
                 dstList.append(data)
         srcList = sorted(srcList, key=lambda k: k['Src IP Addr']) # Sort by IP address
         dstList = sorted(dstList, key=lambda k: k['Dst IP Addr']) # Sort by IP address
@@ -193,6 +188,7 @@ class DataToFactors():
                 dataList = []
                 if isBotnet:
                     dataList = self.Text2DataList(filePath)
+                    print len(dataList)
                 else:
                     dataList = self.Csv2DictList(filePath)
                 serverList = self.ReduceByPort(dataList)
@@ -201,9 +197,9 @@ class DataToFactors():
                 dstDict = {}
 
                 if len(serverList[0]) > 0:
-                    srcDict = self.SeparateByIP(serverList[0], 'Src IP Addr')
+                    srcDict = self.SeparateByIP(serverList[0], 'Src IP Addr') # Sort IP by 'Src IP Addr'
                 if len(serverList[1]) > 0:
-                    dstDict = self.SeparateByIP(serverList[1], 'Dst IP Addr')
+                    dstDict = self.SeparateByIP(serverList[1], 'Dst IP Addr') # Sort IP by 'Dst IP Addr'
 
                 for k in srcDict:
                     # outFile = open(tempPath + '\\srcServer\\' + k + ".txt", 'a')
@@ -380,7 +376,7 @@ if __name__ == '__main__':
     """
 
     # """ BOTNET data
-    filePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/splited"
+    filePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/dumpTXT"
     tempPath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/tempFile"
     savePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/Factors.csv"
     startStamp = datetime.datetime.strptime("2014-02-20 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
