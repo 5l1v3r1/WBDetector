@@ -395,11 +395,15 @@ if __name__ == '__main__':
     """
 
     # """ BOTNET data
-    filePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/dumpTXT"
-    tempPath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/tempFile"
-    savePath = "/home/wmlab/Desktop/Botnet_Dataset/Sality/Factors"
-    startStamp = datetime.datetime.strptime("2014-02-20 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
-    endStamp = datetime.datetime.strptime("2014-04-07 00:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    # Tue May 13 10:05:47 CEST 2014
+    #   win 8 infected with 5b1e1e909a6efca6cabc0fad8a0458a6
+    # Thu May 29 17:06:42 CEST 2014
+    #   restart of pcap because of space run out
+    filePath = "/home/wmlab/Desktop/Botnet_Dataset/Zeus-1/dumpTXT"
+    tempPath = "/home/wmlab/Desktop/Botnet_Dataset/Zeus-1/tempFile"
+    savePath = "/home/wmlab/Desktop/Botnet_Dataset/Zeus-1/Factors"
+    startStamp = datetime.datetime.strptime("2014-05-13 11:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
+    endStamp = datetime.datetime.strptime("2014-05-29 17:00:00.000", "%Y-%m-%d %H:%M:%S.%f")
     isBotnet = True
     # """
 
